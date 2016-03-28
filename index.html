@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.9/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.min.js"></script>
+    <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+</head>
+
+<body ng-app="cloudBlog" id="bg">
+
+    <header ng-controller="headCtrl as hc">
+        <div ng-hide="hc.logged">
+            <input id="username" type="text" placeholder="email" ng-model="hc.name">
+            <input type="password" placeholder="password" ng-model="password">
+            <button ng-click="hc.logIn(hc.name, hc.password)">Login</button>
+        </div>
+
+        <div ng-show="hc.logged">
+            Hello {{hc.userData.password.email}}
+            <button ng-click="hc.logOut()">LogOut</button>
+        </div>
+    </header>
+
+    <div ui-view></div>
+
+</body>
+    <script src="js/angular.js"></script>
+    <script src="js/service.js"></script>
+</html>
