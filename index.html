@@ -7,6 +7,7 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.min.js"></script>
     <script src="https://cdn.firebase.com/js/client/2.4.1/firebase.js"></script>
+    <script src="https://cdn.firebase.com/libs/angularfire/1.2.0/angularfire.min.js"></script>
 </head>
 
 <body ng-app="cloudBlog" id="bg">
@@ -22,7 +23,7 @@
         <div ng-show="hc.logged">
             Hello {{hc.userData.password.email}}
             <a ui-sref="writeEntry">Write Entry</a>
-            <a href="login">Account</a>
+            <a ui-sref="home">Account</a>
             <button ng-click="hc.logOut()">LogOut</button>
         </div>
     </header>

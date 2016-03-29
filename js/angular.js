@@ -4,7 +4,7 @@
 angular.module('cloudBlog', ['ui.router'])
 
 .config(function ($stateProvider, $urlRouterProvider) {
-    $urlRouterProvider.otherwise('/landing');
+    $urlRouterProvider.otherwise('landing');
 
     $stateProvider
         .state('landing', {
@@ -78,13 +78,14 @@ angular.module('cloudBlog', ['ui.router'])
     };
 })
 
-.controller("writeBlog", function(cloudServe){
+.controller("writeBlog", function(cloudServe, $scope){
     var writeScope = this;
     this.postToBlog = function(title, post){
         cloudServe.createPost(title, post)
             .then(function(){
-                console.log("write success");
+                console.log("write success" , writeScope.title);
                 writeScope.title = "";
+                $scope.$digest();
             }, function(){
                 console.log("a fail");
 
