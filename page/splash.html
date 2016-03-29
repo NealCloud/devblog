@@ -1,9 +1,11 @@
 
-<h3 ng-init="sc.allPosts()">Welcome to Neal's Dev Blog</h3>
+<h3 ng-init="sc.allUserPosts()">Welcome to Neal's Dev Blog</h3>
 
 <div ng-repeat="(key,value) in sc.posts">
     <p>Hello</p>
     <p>{{value.title}}</p>
     <p>{{value.post}}</p>
-    <button>Edit</button>
+    <button >Edit</button>
+    <button ng-click="sc.deletePost(key)">Delete</button>
+
 </div>

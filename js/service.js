@@ -17,7 +17,13 @@ angular.module('cloudBlog')
             });
     };
 
-    this.getBlogs = function(){
+    this.deletePost = function(key){
+        console.log("removing " , this.userData.auth.uid, key);
+        var userblog = ref.child(this.userData.auth.uid);
+        return userblog.child(key).remove();
+    };
+
+    this.getPosts = function(){
         return ref.child(this.userData.auth.uid).once("value", function(snap){
            // return snap.val();
         });

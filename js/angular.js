@@ -57,25 +57,37 @@ angular.module('cloudBlog', ['ui.router'])
 })
 
 .controller("splashCtrl", function(cloudServe, $scope){
+    this.test  = "tester";
     var splashScope = this;
     this.posts = {};
-    this.allPosts = function(){
-        cloudServe.getBlogs()
+    this.allUserPosts = function(){
+        cloudServe.getPosts()
             .then(function(response){
                 console.log(response.val());
                 splashScope.posts = response.val();
                 $scope.$digest();
             });
-    }
+    };
+
+    this.deletePost = function(value){
+        cloudServe.deletePost(value)
+            .then(function(){
+                console.log("baleeted");
+                splashScope.allUserPosts();
+            })
+    };
 })
 
 .controller("writeBlog", function(cloudServe){
+    var writeScope = this;
     this.postToBlog = function(title, post){
         cloudServe.createPost(title, post)
             .then(function(){
-                console.log("write success")
+                console.log("write success");
+                writeScope.title = "";
             }, function(){
                 console.log("a fail");
+
             })
     }
 });
