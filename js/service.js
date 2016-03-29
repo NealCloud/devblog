@@ -10,6 +10,13 @@ angular.module('cloudBlog')
     this.loggedIn = auth ? true : false;
     this.userData = auth || {};
 
+    this.createPost = function(title, post){
+        ref.child(userData.auth.uid).push({
+                title:title,
+                post:post
+            });
+    };
+
     this.logIn = function (name, pw){
         return ref.authWithPassword({
             email    : "buddy@bob.com",
@@ -24,7 +31,7 @@ angular.module('cloudBlog')
                         console.log("The specified user account password is incorrect.");
                         break;
                     case "INVALID_USER":
-                        console.log("The specified user account does not exist.");
+                        return "The specified user account does not exist.";
                         break;
                     default:
                         console.log("Error logging user in:", error);
@@ -42,7 +49,5 @@ angular.module('cloudBlog')
             console.log("logged out!");
         });
     }
-
-
 
 });

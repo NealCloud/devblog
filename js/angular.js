@@ -17,6 +17,11 @@ angular.module('cloudBlog', ['ui.router'])
             templateUrl: 'page/login.html',
             controller: 'loginCtrl'
         })
+        .state('writeEntry', {
+            url: '/writeEntry',
+            templateUrl: 'page/createPost.html',
+            controller: 'loginCtrl'
+        })
 })
 
 .controller("headCtrl", function(cloudServe, $scope){
@@ -31,14 +36,16 @@ angular.module('cloudBlog', ['ui.router'])
 
     this.logIn = function(email, password){
         cloudServe.logIn(email, password)
-            .then(function(){
+            .then(function(response){
+
                 headScope.logged = true;
                 $scope.$digest();
+            }, function(error){
+                console.log("THE " + error);
             })
     };
 
     this.logOut = function(){
-
         cloudServe.logOut()
             .then(function(){
                 headScope.logged = false;
