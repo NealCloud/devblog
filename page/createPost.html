@@ -1,5 +1,5 @@
 <div>
-    <input id="title" type="text" ng-model="title">
-    <textarea name="" id="" cols="30" rows="10" ng-model="post"></textarea>
-    <button type="button" ng-click="postToBlog()">Post</button>
+    <input id="title" type="text" ng-model="wb.title">
+    <textarea name="" id="" cols="30" rows="10" ng-model="wb.post"></textarea>
+    <button type="button" ng-click="wb.postToBlog(wb.title, wb.post)">Post</button>
 </div>

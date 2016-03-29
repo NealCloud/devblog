@@ -11,10 +11,16 @@ angular.module('cloudBlog')
     this.userData = auth || {};
 
     this.createPost = function(title, post){
-        ref.child(userData.auth.uid).push({
+        return ref.child(this.userData.auth.uid).push({
                 title:title,
                 post:post
             });
+    };
+
+    this.getBlogs = function(){
+        return ref.child(this.userData.auth.uid).once("value", function(snap){
+           // return snap.val();
+        });
     };
 
     this.logIn = function (name, pw){

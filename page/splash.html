@@ -1,7 +1,9 @@
 
-<div>Welcome to Story Press</div>
-    <a href="/prompts">Prompts</a>
-    <a href="/stories">Stories</a>
-<div>
-    <p></p>
+<h3 ng-init="sc.allPosts()">Welcome to Neal's Dev Blog</h3>
+
+<div ng-repeat="(key,value) in sc.posts">
+    <p>Hello</p>
+    <p>{{value.title}}</p>
+    <p>{{value.post}}</p>
+    <button>Edit</button>
 </div>

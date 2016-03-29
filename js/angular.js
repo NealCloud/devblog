@@ -10,7 +10,8 @@ angular.module('cloudBlog', ['ui.router'])
         .state('landing', {
             url: '/landing',
             templateUrl: 'page/splash.html',
-            controller: 'loginCtrl'
+            controller: 'splashCtrl',
+            controllerAs: 'sc'
         })
         .state('login', {
             url: '/login',
@@ -20,7 +21,8 @@ angular.module('cloudBlog', ['ui.router'])
         .state('writeEntry', {
             url: '/writeEntry',
             templateUrl: 'page/createPost.html',
-            controller: 'loginCtrl'
+            controller: 'writeBlog',
+            controllerAs: 'wb'
         })
 })
 
@@ -54,6 +56,27 @@ angular.module('cloudBlog', ['ui.router'])
     }
 })
 
-.controller("loginCtrl", function(){
+.controller("splashCtrl", function(cloudServe, $scope){
+    var splashScope = this;
+    this.posts = {};
+    this.allPosts = function(){
+        cloudServe.getBlogs()
+            .then(function(response){
+                console.log(response.val());
+                splashScope.posts = response.val();
+                $scope.$digest();
+            });
+    }
+})
 
+.controller("writeBlog", function(cloudServe){
+    this.postToBlog = function(title, post){
+        cloudServe.createPost(title, post)
+            .then(function(){
+                console.log("write success")
+            }, function(){
+                console.log("a fail");
+            })
+    }
 });
+
