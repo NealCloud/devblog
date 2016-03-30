@@ -1,11 +1,26 @@
+<div>
+    <h3 ng-init="sc.allUserPosts()" >Welcome to Neal's Dev Blog</h3>
 
-<h3 ng-init="sc.allUserPosts()">Welcome to Neal's Dev Blog</h3>
+    <input  type="text" ng-model="data.text"/>
+    <h4>You said: {{ data }}</h4>
+    <h4>You said: {{ data.$id }}</h4>
+    <h4>You said: {{ data.$value }}</h4>
 
-<div ng-repeat="(key,value) in sc.posts">
-    <p>Hello</p>
-    <p>{{value.title}}</p>
-    <p>{{value.post}}</p>
-    <button >Edit</button>
-    <button ng-click="sc.deletePost(key)">Delete</button>
+    <div ng-repeat="(key,value) in allPost">
+        <div ng-hide="sc.editmode[$index]">
+            <p>Blog Post {{$index}}</p>
+            <p >{{value.title}}</p>
+            <p>{{value.post}}</p>
+            <button ng-click="sc.toggleEdit($index)" >Edit</button>
+            <button ng-click="sc.deletePost(key)">Delete</button>
+        </div>
 
+        <div  ng-show="sc.editmode[$index]">
+                <p>Blog Post {{$index}}</p>
+                <p contenteditable="true" ng-model="value.title"></p>
+                <p contenteditable="true" ng-model="value.post">{{value.post}}</p>
+                <button ng-click="sc.toggleEdit($index)">Finish</button>
+        </div>
+
+    </div>
 </div>
