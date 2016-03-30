@@ -12,15 +12,16 @@
             <p>Blog Post {{$index}}</p>
             <p >{{value.title}}</p>
             <p>{{value.post}}</p>
-            <button ng-click="sc.toggleEdit($index)" >Edit</button>
+            <button ng-click="sc.toggleEdit($index, key)" >Edit</button>
             <button ng-click="sc.deletePost(key)">Delete</button>
         </div>
 
         <div  ng-show="sc.editmode[$index]">
             <p>Blog Edit Post {{$index}}</p>
-            <input  ng-model="value.title">
-            <input  ng-model="value.post">
-            <button ng-click="sc.toggleEdit($index)">Finish</button>
+            <input  ng-model="value.title"><br><br>
+            <input  ng-model="value.post"><br>
+            <button ng-click="sc.toggleEdit($index, key, true)">Finish</button>
+            <button ng-click="sc.toggleEdit($index, key)">Cancel</button>
         </div>
 
         <!--<div  ng-show="sc.editmode[$index]">-->
