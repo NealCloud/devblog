@@ -38,20 +38,37 @@ angular.module('cloudBlog')
         var splashScope = this;
         this.editmode = {};
         this.posts = {};
-
+        this.testFire = null;
         var testref = new Firebase("https://nealcloud.firebaseio.com/cloudFire");
-        var syncObject = $firebaseObject(testref);
-        syncObject.$bindTo($scope, "data");
-        syncObject.$value = 42;
+        var testObject = new $firebaseObject(testref);
+        //testObject.$bindTo($scope, "data");
+        testObject.$loaded().then(function() {
+            testObject.$value = 233;
+            testObject.$save();
+            console.log(testObject.$value, testObject.$id); // "bar"
+            splashScope.testFire = testObject.$value;
+        });
+
+        this.testChange = function(){
+            console.log("changin it! ", splashScope.testFire);
+            testObject.$value = splashScope.testFire;
+            testObject.$save();
+        };
+
+        this.returnTest = function(){
+            return testObject;
+        };
+
 
         var ref = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/posts");
-        var posts = $firebaseObject(ref);
-        posts.$bindTo($scope, "allPost");
+        this.posts = $firebaseObject(ref);
+        //posts.$bindTo($scope, "allPost");
 
         this.toggleEdit = function (id) {
             console.log(id);
             if (id in this.editmode) {
                 this.editmode[id] = !this.editmode[id];
+                this.posts.$save();
             }
             else {
                 this.editmode[id] = true;
@@ -81,7 +98,6 @@ angular.module('cloudBlog')
         this.allUserPosts = function () {
 
         };
-
 
         this.keyTest = function (e) {
             console.log("yolo", e);
