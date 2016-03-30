@@ -2,4 +2,9 @@
     <input id="title" type="text" ng-model="wb.title">
     <textarea name="" id="" cols="30" rows="10" ng-model="wb.post"></textarea>
     <button type="button" ng-click="wb.postToBlog(wb.title, wb.post)">Post</button>
+    <div ui-view="{{wb.router}}"></div>
+    <button ui-sref=".poke" ng-click="wb.router='columnTwo'">Poke</button>
+    <button ui-sref=".nopoke" ng-click="wb.router='columnOne'">NoPoke</button>
+    <a ui-sref="writeEntry">noke</a>
+    <p ui-view></p>
 </div>

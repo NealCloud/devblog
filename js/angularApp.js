@@ -4,7 +4,7 @@
 angular.module('cloudBlog', ['ui.router', "firebase"])
 
     .config(function ($stateProvider, $urlRouterProvider) {
-        $urlRouterProvider.otherwise('landing');
+        $urlRouterProvider.otherwise('/landing');
 
         $stateProvider
             .state('landing', {
@@ -20,9 +20,33 @@ angular.module('cloudBlog', ['ui.router', "firebase"])
             })
             .state('writeEntry', {
                 url: '/writeEntry',
-                templateUrl: 'page/createPost.html',
-                controller: 'writeBlog',
-                controllerAs: 'wb'
+                views: {
+
+                    // the main template will be placed here (relatively named)
+                    '': { templateUrl: 'page/createPost.html',
+                        controller: 'writeBlog',
+                        controllerAs: 'wb'
+                    },
+
+                    // the child views will be defined here (absolutely named)
+                    'columnOne@writeEntry': { template: 'Look I am a column!' },
+
+                    //// for column two, we'll define a separate controller
+                    'columnTwo@writeEntry': {
+                        template: 'table-data.html'
+                                            }
+                }
+                //templateUrl: 'page/createPost.html',
+                //controller: 'writeBlog',
+                //controllerAs: 'wb'
+            })
+            .state('writeEntry.poke', {
+                url: '/poke',
+                template: 'I like poke'
+            })
+            .state('writeEntry.nopoke', {
+                url: '/nopoke',
+                template: 'I don\'t like poke'
             })
     })
 
@@ -50,6 +74,6 @@ angular.module('cloudBlog', ['ui.router', "firebase"])
                 });
             }
         };
-    })
+    });
 
 

@@ -125,6 +125,8 @@ angular.module('cloudBlog')
     .controller("writeBlog", function (cloudServe, $scope) {
         var writeScope = this;
 
+        this.router = "columnOne";
+
         this.postToBlog = function (title, post) {
             cloudServe.createPost(title, post)
                 .then(function () {
