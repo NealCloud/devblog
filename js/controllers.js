@@ -37,7 +37,7 @@ angular.module('cloudBlog')
         this.test = "tester";
         var splashScope = this;
         this.editmode = {};
-        this.posts = {};
+        this.blogPosts = {};
         this.testFire = null;
         var testref = new Firebase("https://nealcloud.firebaseio.com/cloudFire");
         var testObject = new $firebaseObject(testref);
@@ -45,7 +45,7 @@ angular.module('cloudBlog')
         testObject.$loaded().then(function() {
             testObject.$value = 233;
             testObject.$save();
-            console.log(testObject.$value, testObject.$id); // "bar"
+            console.log(testObject.$value, testObject.$id, splashScope.blogPosts); // "bar"
             splashScope.testFire = testObject.$value;
         });
 
@@ -61,8 +61,8 @@ angular.module('cloudBlog')
 
         this.fakeMaster = {};
         this.wobber = {yes: 2};
-        var ref = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/posts");
-        this.posts = $firebaseObject(ref);
+        var postsRef = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/posts");
+        this.blogPosts = $firebaseObject(postsRef);
         //    .$loaded().then(function(){
         //        console.log("finished loading", splashScope.posts);
         //      splashScope.postsMaster = angular.copy(splashScope.posts);
@@ -70,25 +70,26 @@ angular.module('cloudBlog')
         //posts.$bindTo($scope, "allPost");
 
         this.toggleEdit = function (id, key, save) {
-            //console.log(id, this.posts);
+            console.log(id, this.blogPosts);
             //$scope.fakeMaster = angular.copy($scope.wobber);
             //console.log("before copy", this.fakeMaster);
 
             if (id in this.editmode) {
                 this.editmode[id] = !this.editmode[id];
                 if(save){
-                    this.posts.$save();
+                    var editRef = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/posts/" + key);
+                    editRef.update(this.blogPosts[key]);
+                    //this.blogPosts.$save();
                 }
                 else{
-                    console.log("after copy", this.fakeMaster[key]);
-                    angular.copy(this.fakeMaster[key], this.posts[key]);
+                    //console.log("after copy", this.fakeMaster[key]);
+                    //angular.copy(this.fakeMaster[key], this.blogPosts[key]);
                 }
             }
             else {
                 this.editmode[id] = true;
-                this.fakeMaster[key] = {};
-                angular.copy(this.posts[key], this.fakeMaster[key]);
-                this.fakeMaster
+                //this.fakeMaster[key] = {};
+                //angular.copy(this.blogPosts[key], this.fakeMaster[key]);
             }
 
         };
@@ -119,6 +120,8 @@ angular.module('cloudBlog')
 
         this.keyTest = function (e) {
             console.log("yolo", e);
+            cloudServe.getPosts();
+
         }
     })
 

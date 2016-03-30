@@ -25,8 +25,10 @@ angular.module('cloudBlog')
         };
 
         this.getPosts = function () {
-            return ref.child("posts").once("value", function (snap) {
-                console.log(snap);
+            console.log("getting posts");
+            //ref.child("bots").push({id: this.userData.auth.uid, test: 12, text: "yo I'm a bot"});
+            ref.child("bots").once("value", function (snap) {
+                console.log(snap.val());
                 // return snap.val();
             });
         };
