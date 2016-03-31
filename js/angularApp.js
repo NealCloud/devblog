@@ -1,7 +1,7 @@
 /**
  * Created by Mad Martigan on 3/28/2016.
  */
-angular.module('cloudBlog', ['ui.router', "firebase"])
+angular.module('cloudBlog', ['ui.router', "firebase", "btford.markdown"])
 
     .config(function ($stateProvider, $urlRouterProvider) {
         $urlRouterProvider.otherwise('/landing');

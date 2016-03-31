@@ -9,6 +9,9 @@
     </ul>
     <button ng-click="wb.addTag(wb.tagSelected)">Add a tag</button>
     <button type="button" ng-click="wb.postToBlog(wb.blogPost)">Post</button>
+    <h3>{{wb.blogPost.title}}</h3>
+    <div btf-markdown="wb.blogPost.post"></div>
+
     <div ui-view="{{wb.router}}"></div>
     <button ui-sref=".poke" ng-click="wb.router='columnTwo'">Poke</button>
     <button ui-sref=".nopoke" ng-click="wb.router='columnOne'">NoPoke</button>
