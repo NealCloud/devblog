@@ -3,6 +3,7 @@
     <textarea name="" id="" cols="30" rows="10" ng-model="wb.blogPost.post"></textarea>
     <select ng-model="wb.tagSelected" ng-options="item as item for item in wb.possibleTags">
     </select>
+    <input type="checkbox" ng-model="wb.blogPost.public" checked>
     <ul>
         <li ng-repeat="tag in wb.blogPost.tags" ng-click="wb.removeTag(tag)">{{tag}}</li>
     </ul>

@@ -17,7 +17,8 @@ angular.module('cloudBlog')
                 post: postObj.post,
                 created: Firebase.ServerValue.TIMESTAMP,
                 tags: postObj.tags,
-                rating: 0
+                rating: 0,
+                public: postObj.public
             });
         };
 
