@@ -13,12 +13,14 @@
 <body ng-app="cloudBlog" id="bg">
 
     <header ng-controller="headCtrl as hc">
+
         <!--logged Out-->
         <div ng-hide="hc.logged">
             <input id="username" type="text" placeholder="email" ng-model="hc.name">
             <input type="password" placeholder="password" ng-model="hc.password">
             <button ng-click="hc.logIn(hc.name, hc.password)">Login</button>
         </div>
+
         <!--logged In-->
         <div ng-show="hc.logged">
             Hello {{hc.userData.password.email}}
