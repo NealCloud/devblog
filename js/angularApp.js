@@ -48,6 +48,12 @@ angular.module('cloudBlog', ['ui.router', "firebase", "btford.markdown"])
                 url: '/nopoke',
                 template: 'I don\'t like poke'
             })
+            .state('makeProject', {
+                url: '/makeProject',
+                templateUrl: 'page/createProject.html',
+                controller: 'projectCtrl',
+                controllerAs: 'pc'
+            })
     })
 
     .directive("contenteditable", function () {

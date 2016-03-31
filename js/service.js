@@ -10,15 +10,29 @@ angular.module('cloudBlog')
         this.loggedIn = auth ? true : false;
         this.userData = auth || {};
 
+        this.createProject = function (postObj) {
+            return ref.child("projects").push({
+                author: this.userData.auth.uid,
+                title: postObj.title || "no title",
+                description: postObj.description || "no words",
+                created: Firebase.ServerValue.TIMESTAMP,
+                tags: postObj.tags || {notag: "notag"},
+                rating: 0,
+                public: postObj.public || false,
+                collaborators: postObj.collaborators || {}
+            });
+        };
+
         this.createPost = function (postObj) {
             return ref.child("posts").push({
                 author: this.userData.auth.uid,
-                title: postObj.title,
-                post: postObj.post,
+                title: postObj.title || "no title",
+                post: postObj.post || "no words",
                 created: Firebase.ServerValue.TIMESTAMP,
-                tags: postObj.tags,
+                tags: postObj.tags || {notag: "notag"},
                 rating: 0,
-                public: postObj.public
+                public: postObj.public || false,
+                project: postObj.project || "general"
             });
         };
 

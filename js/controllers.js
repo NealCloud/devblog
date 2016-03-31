@@ -155,7 +155,25 @@ angular.module('cloudBlog')
                     $scope.$digest();
                 }, function () {
                     console.log("a fail");
-
                 })
         }
-    });
+    })
+.controller("projectCtrl", function (cloudServe, $scope, cloudFireObj) {
+    var projectScope = this;
+    this.blogProject = {};
+    this.blogProject.tags = {};
+    this.router = "columnOne";
+
+    this.projects = cloudFireObj("projects");
+
+    this.postToBlog = function (post) {
+        cloudServe.createProject(post)
+            .then(function () {
+                console.log("write success", projectScope.title);
+                projectScope.title = "";
+                $scope.$digest();
+            }, function () {
+                console.log("a fail");
+            })
+    }
+});
