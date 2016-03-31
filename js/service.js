@@ -10,11 +10,15 @@ angular.module('cloudBlog')
         this.loggedIn = auth ? true : false;
         this.userData = auth || {};
 
-        this.createPost = function (title, post) {
+        this.createPost = function (postObj) {
             return ref.child("posts").push({
                 author: this.userData.auth.uid,
-                title: title,
-                post: post
+                title: postObj.title,
+                post: postObj.post,
+                created: Firebase.ServerValue.TIMESTAMP,
+                tags: postObj.tags,
+                rating: 0,
+                public: postObj.public
             });
         };
 
@@ -25,8 +29,10 @@ angular.module('cloudBlog')
         };
 
         this.getPosts = function () {
-            return ref.child("posts").once("value", function (snap) {
-                console.log(snap);
+            console.log("getting posts");
+            //ref.child("bots").push({id: this.userData.auth.uid, test: 12, text: "yo I'm a bot"});
+            ref.child("bots").once("value", function (snap) {
+                console.log(snap.val());
                 // return snap.val();
             });
         };
@@ -64,4 +70,14 @@ angular.module('cloudBlog')
             });
         }
 
-    });
+    })
+
+.factory("cloudFireObj", ["$firebaseObject",
+    function($firebaseObject) {
+        return function(path) {
+            var ref = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/");
+            var pathRef = ref.child(path);
+            return $firebaseObject(pathRef);
+        }
+    }
+]);

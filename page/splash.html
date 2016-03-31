@@ -5,8 +5,9 @@
     <h4>Data: {{ sc.testFire }}</h4>
     <h4>Data Id: {{ sc.returnTest().$id }}</h4>
     <h4>Data Value: {{ sc.testFire.$value }}</h4>
+    <button ng-click="sc.keyTest()">key test</button>
 
-    <div ng-repeat="(key,value) in sc.posts">
+    <div ng-repeat="(key,value) in sc.blogPosts">
 
         <div ng-hide="sc.editmode[$index]">
             <p>Blog Post {{$index}}</p>
