@@ -125,13 +125,30 @@ angular.module('cloudBlog')
         }
     })
 
-    .controller("writeBlog", function (cloudServe, $scope) {
+    .controller("writeBlog", function (cloudServe, $scope, cloudFireObj) {
         var writeScope = this;
-
+        this.blogPost = {};
+        this.blogPost.tags = {};
         this.router = "columnOne";
 
-        this.postToBlog = function (title, post) {
-            cloudServe.createPost(title, post)
+        this.possibleTags = cloudFireObj("tags");
+
+        this.addTag = function(tag){
+            console.log("adding ", tag);
+            if(tag in this.blogPost.tags){
+
+            }
+            else{
+                this.blogPost.tags[tag] = tag;
+            }
+        };
+
+        this.removeTag = function(tag){
+            delete this.blogPost.tags[tag]
+        };
+
+        this.postToBlog = function (post) {
+            cloudServe.createPost(post)
                 .then(function () {
                     console.log("write success", writeScope.title);
                     writeScope.title = "";
