@@ -1,0 +1,12 @@
+<div>
+    <h3>Projects Page</h3>
+    <div ng-repeat="(key,value) in pc.blogProjects">
+        <div>
+            <p>Project {{$index}}</p>
+            <p >{{value.title}}</p>
+            <div btf-markdown="value.description"></div>
+            <a href="index.html#/project/{{key}}">Link to Project</a>
+        </div>
+
+    </div>
+</div>

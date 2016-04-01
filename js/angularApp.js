@@ -28,6 +28,12 @@ angular.module('cloudBlog', ['ui.router', "firebase", "btford.markdown"])
                 controller: 'splashCtrl',
                 controllerAs: 'sc'
             })
+            .state('projects',{
+                url: '/projects',
+                templateUrl: 'page/projects.html',
+                controller: 'projectsCtrl',
+                controllerAs: 'pc'
+            })
             .state('login', {
                 url: '/login',
                 templateUrl: 'page/login.html',

@@ -56,7 +56,7 @@ angular.module('cloudBlog')
          *  params key(string) contains a firebase key string
          *  uses a key to call remove on a firebase ref
          * */
-        this.deletePost = function (key, path) {
+        this.deleteData = function (key, path) {
             //console.log("removing ", key);
             var userblog = ref.child(path);
             return userblog.child(key).remove(); //returns to trigger a promise

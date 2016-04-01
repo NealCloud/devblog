@@ -68,7 +68,7 @@ angular.module('cloudBlog')
         };
 
         this.deletePost = function (value, path) {
-            cloudServe.deletePost(value, path)
+            cloudServe.deleteData(value, path)
                 .then(function () {
                     console.log("Baleeted");
                     //splashScope.allUserPosts();
@@ -162,6 +162,24 @@ angular.module('cloudBlog')
         }
     })
     /**
+     * controller for the splash page
+     * calls a fireObject to show all the projects
+     * **/
+    .controller("projectsCtrl", function (cloudServe, $scope, $firebaseObject) {
+        this.test = "tester";
+        var splashScope = this;
+        this.editmode = {};
+        this.blogPosts = {};
+        this.testFire = null;
+
+        //TODO: turn projects into a list to make filters easier
+        var projects = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/projects");
+        this.blogProjects = $firebaseObject(projects);
+
+    })
+
+
+    /**
      * controller for project page
      * used for displaying/editing/deleting project posts
     * */
@@ -170,7 +188,7 @@ angular.module('cloudBlog')
     this.blogProject = {};
     this.blogPosts = [];
     this.editmode = {};
-    this.fakeMaster = {};
+    this.tempPost = {};
     this.router = "columnOne";
     this.projects = cloudFireObj("projects");
 /**function postToBlog
@@ -216,45 +234,40 @@ angular.module('cloudBlog')
             })
         })
     };
-
+    //edits a post in place
     this.toggleEdit = function (value, key, save) {
-        console.log(value, key, save);
-        if (key in this.fakeMaster) {
-            this.fakeMaster[key].edit = !this.fakeMaster[key].edit;
+        //checks if key property inside temp Post
+        if (key in this.tempPost) {
+            //check if user wants to save the edit and update
             if(save){
                 var editRef = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/posts/" + key);
-                editRef.update(this.fakeMaster[key])
+                editRef.update(this.tempPost[key])
                     .then(function(){
                         console.log("updated!");
-                        delete projectScope.fakeMaster[key];
+                        delete projectScope.tempPost[key];
                         projectScope.getPosts();
                     });
             }
+            //otherwise delete the temporary property
             else{
-                delete this.fakeMaster[key];
-                //angular.copy(value, this.fakeMaster[key]);
-                //angular.copy(projectScope.fakeMaster[key], projectScope.blogPosts[id].val);
+                delete this.tempPost[key];
             }
         }
         else {
-            //console.log("after copy", this.fakeMaster[key]);
-            this.fakeMaster[key] = {};
-            angular.copy(value, this.fakeMaster[key]);
-
-            this.fakeMaster[key].edit = true;
-
-            //console.log(this.fakeMaster[key]);
+            //if no key in temp create one and copy post info over and create an edit as true
+            this.tempPost[key] = {};
+            angular.copy(value, this.tempPost[key]);
         }
     };
 
 
     this.deleteData = function (key, path) {
         console.log("Baleeted", key, path);
-        //cloudServe.deletePost(key, path)
-        //    .then(function () {
-        //        console.log("Baleeted");
-        //        projectScope.getPosts();
-        //    })
+        cloudServe.deleteData(key, path)
+            .then(function () {
+                console.log("Baleeted");
+                projectScope.getPosts();
+            })
     };
 
 });

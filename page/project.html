@@ -9,7 +9,7 @@
         <!--Posts Template-->
         <div ng-repeat="post in pc.blogPosts | orderBy:'val.title'">
             <!--regular post-->
-            <div ng-hide="pc.fakeMaster[post.key].edit">
+            <div ng-hide="pc.tempPost[post.key]">
                 <p>Blog Post {{$index}}</p>
                 <p>{{post.val.title}}</p>
                 <div btf-markdown="post.val.post"></div>
@@ -17,10 +17,10 @@
                 <button ng-click="pc.deleteData(post.key, 'posts')">Delete</button>
             </div>
             <!--edit mode post-->
-            <div ng-show="pc.fakeMaster[post.key].edit">
+            <div ng-show="pc.tempPost[post.key]">
                 <p>Blog Edit Post {{$index}}</p>
-                <input ng-model="pc.fakeMaster[post.key].title"><br><br>
-                <textarea ng-model="pc.fakeMaster[post.key].post"></textarea><br>
+                <input ng-model="pc.tempPost[post.key].title"><br><br>
+                <textarea ng-model="pc.tempPost[post.key].post"></textarea><br>
                 <button ng-click="pc.toggleEdit(post.val, post.key, true)">Finish</button>
                 <button ng-click="pc.toggleEdit(post.val, post.key)">Cancel</button>
             </div>
