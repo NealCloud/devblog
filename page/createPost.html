@@ -1,5 +1,6 @@
 <div>
-    <input id="title" type="text" ng-model="wb.blogPost.title">
+    <input id="title" type="text" ng-model="wb.blogPost.title" placeholder="Title">
+    <input id="project" type="text" ng-model="wb.blogPost.project" placeholder="project">
     <textarea name="" id="" cols="30" rows="10" ng-model="wb.blogPost.post"></textarea>
     <select ng-model="wb.tagSelected" ng-options="item as item for item in wb.possibleTags">
     </select>

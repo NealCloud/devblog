@@ -1,5 +1,5 @@
 <div>
-    <h3 ng-init="sc.allUserPosts()" >Welcome to Neal's Dev Blog</h3>
+    <h3>Welcome to Neal's Dev Blog</h3>
 
     <input  type="text" ng-model="sc.testFire" ng-change="sc.testChange()">
     <h4>Data: {{ sc.testFire }}</h4>
@@ -7,23 +7,32 @@
     <h4>Data Value: {{ sc.testFire.$value }}</h4>
     <button ng-click="sc.keyTest()">key test</button>
 
-    <div ng-repeat="(key,value) in sc.blogPosts">
+    <div ng-repeat="(key,value) in sc.blogProjects">
 
-        <div ng-hide="sc.editmode[$index]">
-            <p>Blog Post {{$index}}</p>
+        <div>
+            <p>Project {{$index}}</p>
             <p >{{value.title}}</p>
-            <div btf-markdown="value.post"></div>
+            <div btf-markdown="value.description"></div>
+            <a href="index.html#/project/{{key}}">Link to Project</a>
             <button ng-click="sc.toggleEdit($index, key)" >Edit</button>
             <button ng-click="sc.deletePost(key)">Delete</button>
         </div>
 
-        <div  ng-show="sc.editmode[$index]">
-            <p>Blog Edit Post {{$index}}</p>
-            <input  ng-model="value.title"><br><br>
-            <textarea  ng-model="value.post"></textarea><br>
-            <button ng-click="sc.toggleEdit($index, key, true)">Finish</button>
-            <button ng-click="sc.toggleEdit($index, key)">Cancel</button>
-        </div>
+        <!--<div ng-hide="sc.editmode[$index]">-->
+            <!--<p>Blog Post {{$index}}</p>-->
+            <!--<p >{{value.title}}</p>-->
+            <!--<div btf-markdown="value.post"></div>-->
+            <!--<button ng-click="sc.toggleEdit($index, key)" >Edit</button>-->
+            <!--<button ng-click="sc.deletePost(key)">Delete</button>-->
+        <!--</div>-->
+
+        <!--<div  ng-show="sc.editmode[$index]">-->
+            <!--<p>Blog Edit Post {{$index}}</p>-->
+            <!--<input  ng-model="value.title"><br><br>-->
+            <!--<textarea  ng-model="value.post"></textarea><br>-->
+            <!--<button ng-click="sc.toggleEdit($index, key, true)">Finish</button>-->
+            <!--<button ng-click="sc.toggleEdit($index, key)">Cancel</button>-->
+        <!--</div>-->
 
         <!--<div  ng-show="sc.editmode[$index]">-->
                 <!--<p>Blog Post {{$index}}</p>-->
