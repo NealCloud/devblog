@@ -49,7 +49,8 @@ angular.module('cloudBlog')
                 tags: postObj.tags || {notag: "notag"},
                 rating: 0,
                 public: postObj.public || false,
-                project: postObj.project || "general"
+                project: postObj.project || "general",
+                hours: postObj.hours || 0
             });
         };
         /** function: delete a Post

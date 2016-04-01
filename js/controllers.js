@@ -91,14 +91,17 @@ angular.module('cloudBlog')
     .controller("splashCtrl", function (cloudServe, $scope, $firebaseObject) {
         this.test = "tester";
         var splashScope = this;
-        this.editmode = {};
-        this.blogPosts = {};
         this.testFire = null;
 
         //TODO: turn projects into a list to make filters easier
-        var projects = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/projects");
-        this.blogProjects = $firebaseObject(projects);
+        var posts = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/posts");
+        this.blogPosts = $firebaseObject(posts);
 
+
+        this.timeConvert = function(value){
+            var a = new Date(value);
+            return a.toDateString();
+        };
         /**
          * Used for testing firebaseObjects
         * */
@@ -108,7 +111,7 @@ angular.module('cloudBlog')
         testObject.$loaded().then(function() {
             testObject.$value = 233;
             testObject.$save();
-            console.log(testObject.$value, testObject.$id, splashScope.blogPosts); // "bar"
+            console.log(testObject.$value, testObject.$id); // "bar"
             splashScope.testFire = testObject.$value;
         });
 
@@ -162,26 +165,20 @@ angular.module('cloudBlog')
         }
     })
     /**
-     * controller for the splash page
+     * controller for the Projects page
      * calls a fireObject to show all the projects
      * **/
-    .controller("projectsCtrl", function (cloudServe, $scope, $firebaseObject) {
+    .controller("projectsCtrl", function (cloudServe, $scope, cloudFireObj, $firebaseObject) {
         this.test = "tester";
         var splashScope = this;
-        this.editmode = {};
-        this.blogPosts = {};
-        this.testFire = null;
-
+        this.blogProjects = cloudFireObj("projects");
         //TODO: turn projects into a list to make filters easier
-        var projects = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/projects");
-        this.blogProjects = $firebaseObject(projects);
-
+        //var projects = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/projects");
+        //this.blogProjects = $firebaseObject(projects);
     })
-
-
     /**
-     * controller for project page
-     * used for displaying/editing/deleting project posts
+     * controller for a Projects page
+     * used for displaying/editing/deleting project properties and posts
     * */
 .controller("projectCtrl", function (cloudServe, $scope, cloudFireObj, $firebaseObject) {
     var projectScope = this;
@@ -214,25 +211,28 @@ angular.module('cloudBlog')
         this.blogProject = $firebaseObject(projectRef.child($scope.$stateParams.projectID));
         cloudServe.setCurrentProject($scope.$stateParams.projectID);
     };
-    /**function getProject
-     * grabs a firebase object by Post with same project key in current url path
+    /**function getPosts
+     * creates a fireObject of all posts that have same project id and pushes them to blogPosts
      * */
+    this.testCall = function(){
+        console.log(this.blogPosts);
+    };
     this.getPosts = function(){
+
         var postsRef = new Firebase('https://nealcloud.firebaseio.com/cloudBlog/posts');
         var query = postsRef.orderByChild('project').equalTo($scope.$stateParams.projectID);
         //console.log(query);
         query.once('value', function(snapshot){
-            //console.log(snapshot.val());
+
             //projectScope.blogPosts = snapshot.val();
             //$scope.$digest();
             projectScope.blogPosts = [];
-            snapshot.forEach(function(child){
-                //console.log(child.val());
-                projectScope.blogPosts.push({val:child.val(), key:child.key()});
-                $scope.$digest();
-                //$scope.$apply();
-            })
-        })
+            $scope.$apply(
+                snapshot.forEach(function(child){
+                    projectScope.blogPosts.push({val:child.val(), key:child.key()});
+                })
+            );
+        });
     };
     //edits a post in place
     this.toggleEdit = function (value, key, save) {

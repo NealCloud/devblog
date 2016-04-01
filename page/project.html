@@ -5,13 +5,13 @@
         <div>
             <div btf-markdown="pc.blogProject.description"></div>
             <button ng-click="pc.deleteData(pc.blogProject.$id, 'projects')">Delete Project</button>
+            <button ng-click="pc.testCall()">test</button>
         </div>
         <!--Posts Template-->
         <div ng-repeat="post in pc.blogPosts | orderBy:'val.title'">
             <!--regular post-->
             <div ng-hide="pc.tempPost[post.key]">
-                <p>Blog Post {{$index}}</p>
-                <p>{{post.val.title}}</p>
+                <h3>{{post.val.title}}</h3>
                 <div btf-markdown="post.val.post"></div>
                 <button ng-click="pc.toggleEdit(post.val, post.key)">Edit</button>
                 <button ng-click="pc.deleteData(post.key, 'posts')">Delete</button>

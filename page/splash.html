@@ -7,15 +7,14 @@
     <h4>Data Value: {{ sc.testFire.$value }}</h4>
     <button ng-click="sc.keyTest()">key test</button>
 
-    <div ng-repeat="(key,value) in sc.blogProjects">
+    <h2>Lastest Posts</h2>
+    <div ng-repeat="(key,value) in sc.blogPosts">
 
         <div>
-            <p>Project {{$index}}</p>
-            <p >{{value.title}}</p>
-            <div btf-markdown="value.description"></div>
-            <a href="index.html#/project/{{key}}">Link to Project</a>
-            <button ng-click="sc.toggleEdit($index, key)" >Edit</button>
-            <button ng-click="sc.deletePost(key)">Delete</button>
+            <h4>{{value.title}}</h4>
+            <h5>posted on {{sc.timeConvert(value.created)}}</h5>
+            <div btf-markdown="value.post"></div>
+            <a  ng-show="value.project" href="index.html#/project/{{value.project}}">Link to Project</a>
         </div>
 
         <!--<div ng-hide="sc.editmode[$index]">-->
