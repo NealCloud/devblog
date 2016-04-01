@@ -67,9 +67,9 @@ angular.module('cloudBlog', ['ui.router', "firebase", "btford.markdown"])
                 controllerAs: 'pc'
             })
             /**
-             * Use dynamic routes here
-             * create a unique link in the project with an ID key
-             * and retrieve it with $stateparams
+             * Project uses dynamic routes
+             * creates a unique link in the project path with an ID key
+             * key can be retrieved with $stateParams
             * */
             .state('project', {
                 url: '/project/:projectID',

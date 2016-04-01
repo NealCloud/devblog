@@ -67,8 +67,8 @@ angular.module('cloudBlog')
             }
         };
 
-        this.deletePost = function (value) {
-            cloudServe.deletePost(value)
+        this.deletePost = function (value, path) {
+            cloudServe.deletePost(value, path)
                 .then(function () {
                     console.log("Baleeted");
                     //splashScope.allUserPosts();
@@ -86,7 +86,7 @@ angular.module('cloudBlog')
     })
     /**
      * controller for the splash page
-     * calls a fireObject to be repeated and viewed
+     * calls a fireObject to show all the projects
      * **/
     .controller("splashCtrl", function (cloudServe, $scope, $firebaseObject) {
         this.test = "tester";
@@ -129,10 +129,13 @@ angular.module('cloudBlog')
         var writeScope = this;
         this.blogPost = {};
         this.blogPost.tags = {};
+        this.blogPost.public = true;
         this.router = "columnOne";
         this.blogPost.project = cloudServe.currentProject;
         this.possibleTags = cloudFireObj("tags");
-
+        /** function addTag:
+         *  params: tag
+        * */
         this.addTag = function(tag){
             console.log("adding ", tag);
             if(tag in this.blogPost.tags){
@@ -186,7 +189,7 @@ angular.module('cloudBlog')
     };
     /**function getProject
      * params post(obj)
-     * grabs a firebase object by key name
+     * grabs a Project in a firebase object by a key string based on the current url path
      * */
     this.getProject = function(){
         var projectRef = new Firebase('https://nealcloud.firebaseio.com/cloudBlog/projects');
@@ -194,7 +197,7 @@ angular.module('cloudBlog')
         cloudServe.setCurrentProject($scope.$stateParams.projectID);
     };
     /**function getProject
-     * grabs a firebase object by key name
+     * grabs a firebase object by Post with same project key in current url path
      * */
     this.getPosts = function(){
         var postsRef = new Firebase('https://nealcloud.firebaseio.com/cloudBlog/posts');
@@ -214,37 +217,44 @@ angular.module('cloudBlog')
         })
     };
 
-    this.toggleEdit = function (id, key, save) {
-
-        if (id in this.editmode) {
-            this.editmode[id] = !this.editmode[id];
+    this.toggleEdit = function (value, key, save) {
+        console.log(value, key, save);
+        if (key in this.fakeMaster) {
+            this.fakeMaster[key].edit = !this.fakeMaster[key].edit;
             if(save){
                 var editRef = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/posts/" + key);
-                editRef.update(this.blogPosts[id].val)
+                editRef.update(this.fakeMaster[key])
                     .then(function(){
                         console.log("updated!");
+                        delete projectScope.fakeMaster[key];
                         projectScope.getPosts();
                     });
             }
             else{
-                angular.copy(projectScope.fakeMaster[key], projectScope.blogPosts[id].val);
+                delete this.fakeMaster[key];
+                //angular.copy(value, this.fakeMaster[key]);
+                //angular.copy(projectScope.fakeMaster[key], projectScope.blogPosts[id].val);
             }
         }
         else {
-            this.editmode[id] = true;
+            //console.log("after copy", this.fakeMaster[key]);
             this.fakeMaster[key] = {};
-            angular.copy(this.blogPosts[id].val, this.fakeMaster[key]);
-            console.log("after copy", this.fakeMaster[key]);
+            angular.copy(value, this.fakeMaster[key]);
+
+            this.fakeMaster[key].edit = true;
+
+            //console.log(this.fakeMaster[key]);
         }
     };
 
-    this.deletePost = function (value) {
-        console.log("Baleeted", value);
-        cloudServe.deletePost(value)
-            .then(function () {
-                console.log("Baleeted");
-                projectScope.getPosts();
-            })
+
+    this.deleteData = function (key, path) {
+        console.log("Baleeted", key, path);
+        //cloudServe.deletePost(key, path)
+        //    .then(function () {
+        //        console.log("Baleeted");
+        //        projectScope.getPosts();
+        //    })
     };
 
 });

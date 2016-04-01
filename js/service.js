@@ -25,13 +25,15 @@ angular.module('cloudBlog')
         this.createProject = function (projectObj) {
             return ref.child("projects").push({
                 author: this.userData.auth.uid,
-                title: projectObj.title || "no title",
-                description: projectObj.description || "no words",
+                title: projectObj.title || "big Zero",
+                description: projectObj.description || "no words to describe its awesomeness",
                 created: Firebase.ServerValue.TIMESTAMP,
                 tags: projectObj.tags || {notag: "notag"},
                 rating: 0,
                 public: projectObj.public || false,
-                collaborators: projectObj.collaborators || {}
+                collaborators: projectObj.collaborators || {},
+                completed: false,
+                hours: 0
             });
         };
         /** function: create a post
@@ -54,9 +56,9 @@ angular.module('cloudBlog')
          *  params key(string) contains a firebase key string
          *  uses a key to call remove on a firebase ref
          * */
-        this.deletePost = function (key) {
+        this.deletePost = function (key, path) {
             //console.log("removing ", key);
-            var userblog = ref.child("posts");
+            var userblog = ref.child(path);
             return userblog.child(key).remove(); //returns to trigger a promise
         };
         /** function: get Test
@@ -75,6 +77,7 @@ angular.module('cloudBlog')
          *  uses strings to login to firebase
          * */
         this.logIn = function (name, pw) {
+            //calls firebase authorize function
             return ref.authWithPassword({
                 email: "buddy@bob.com",
                 password: "buddybob"
@@ -103,6 +106,7 @@ angular.module('cloudBlog')
          *  uses firebase logout to function to revoke access
          * */
         this.logOut = function () {
+            //calls firebase unauthorize function
             return ref.unauth(function () {
                 cloudServScope.loggedIn = false;
                 cloudServScope.userData = {};
