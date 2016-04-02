@@ -172,32 +172,11 @@ angular.module('cloudBlog')
      * controller for the Projects page
      * calls a fireObject to show all the projects
      * **/
-    .controller("projectsCtrl", function (cloudServe, $scope, cloudFireObj, $firebaseObject) {
+    .controller("projectsCtrl", function (cloudServe, $scope, cloudFireObj, $firebaseObject, cloudFireArray) {
         this.test = "tester";
         var projectScope = this;
-        this.blogProjects = [];//cloudFireObj("projects");
+        this.blogProjects = cloudFireArray("projects");
 
-        this.getProjects = function(){
-
-            var postsRef = new Firebase('https://nealcloud.firebaseio.com/cloudBlog/posts');
-            var query = postsRef.orderByChild('created').equalTo($scope.$stateParams.projectID);
-            //console.log(query);
-            query.once('value', function(snapshot){
-
-                //projectScope.blogPosts = snapshot.val();
-                //$scope.$digest();
-                projectScope.blogProjects = [];
-                $scope.$apply(
-                    snapshot.forEach(function(child){
-                        projectScope.blogProjects.push({val:child.val(), key:child.key()});
-                    })
-                );
-            });
-        };
-
-        //TODO: turn projects into a list to make filters easier
-        //var projects = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/projects");
-        //this.blogProjects = $firebaseObject(projects);
     })
     /**
      * controller for a Projects page

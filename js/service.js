@@ -14,7 +14,6 @@ angular.module('cloudBlog')
         this.userData = auth || {}; // the user data
         this.currentProject = ""; // the current project key
 
-
         this.timeConvert = function(value){
             var time = new Date(value);
             return time.toDateString();
@@ -28,6 +27,8 @@ angular.module('cloudBlog')
          *  uses object data to make a new project in firebase
         * */
         this.createProject = function (projectObj) {
+            var user = {};
+            user[this.userData.auth.uid] = true;
             return ref.child("projects").push({
                 author: this.userData.auth.uid,
                 title: projectObj.title || "big Zero",
@@ -36,9 +37,10 @@ angular.module('cloudBlog')
                 tags: projectObj.tags || {notag: "notag"},
                 rating: 0,
                 public: projectObj.public || false,
-                collaborators: projectObj.collaborators || {},
+                collaborators: projectObj.collaborators || user,
                 completed: false,
-                hours: 0
+                hours: 0,
+                repo: projectObj.repo || null
             });
         };
         /** function: create a post
@@ -48,6 +50,7 @@ angular.module('cloudBlog')
         this.createPost = function (postObj) {
             return ref.child("posts").push({
                 author: this.userData.auth.uid,
+                avatar: this.userData.password.profileImageURL,
                 title: postObj.title || "no title",
                 post: postObj.post || "no words",
                 created: Firebase.ServerValue.TIMESTAMP,
@@ -105,6 +108,8 @@ angular.module('cloudBlog')
                     }
                 } else {
                     console.log("Authenticated successfully with payload:", authData);
+                    cloudServScope.userData = authData;
+                    cloudServScope.loggedIn = false;
                 }
             });
         };
@@ -124,8 +129,7 @@ angular.module('cloudBlog')
 /**
  * factory that returns a firebaseObject inside cloudBlog depending on path given
 * */
-.factory("cloudFireObj", ["$firebaseObject",
-    function($firebaseObject) {
+.factory("cloudFireObj", ["$firebaseObject", function($firebaseObject) {
         return function(path) {
             var ref = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/");
             var pathRef = ref.child(path);
@@ -133,11 +137,11 @@ angular.module('cloudBlog')
         }
     }
 ])
-.factory("cloudNormObj",
-    function() {
+.factory("cloudFireArray", function($firebaseArray) {
         return function(path) {
             var ref = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/");
-            return ref.child(path);
+            var pathRef = ref.child(path);
+            return $firebaseArray(pathRef);
         }
     }
 );

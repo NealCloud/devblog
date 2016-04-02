@@ -1,13 +1,13 @@
-<div>
+<div ng-init="">
 
     <h3>Projects Page</h3>
 
-    <div ng-repeat="(key,value) in pc.blogProjects">
+    <div ng-repeat="project in pc.blogProjects | orderBy:'project.title'">
         <div>
-            <h1 >{{value.title}}</h1>
+            <h1 >{{project.title}}</h1>
             <h6>Project {{$index}}</h6>
-            <div btf-markdown="value.description"></div>
-            <a href="index.html#/project/{{key}}">Link to Project</a>
+            <div btf-markdown="project.description"></div>
+            <a href="index.html#/project/{{project.$id}}">Link to {{project.title}}</a>
         </div>
 
     </div>
