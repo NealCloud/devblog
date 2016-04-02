@@ -88,20 +88,22 @@ angular.module('cloudBlog')
      * controller for the splash page
      * calls a fireObject to show all the projects
      * **/
-    .controller("splashCtrl", function (cloudServe, $scope, $firebaseObject) {
+    .controller("splashCtrl", function (cloudServe, $scope, $firebaseObject, cloudFireObj) {
         this.test = "tester";
         var splashScope = this;
         this.testFire = null;
-
+        var projRef =  new Firebase("https://nealcloud.firebaseio.com/cloudBlog/projectName");
+        this.projNames = new $firebaseObject(projRef);
         //TODO: turn projects into a list to make filters easier
         var posts = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/posts");
-        this.blogPosts = $firebaseObject(posts);
+        posts.orderByChild("created").startAt(3).limitToLast(2).on("value", function(a){
+            console.log(a.val());
+            splashScope.blogPosts = a.val();
+        });
+        // this.blogPosts = $firebaseObject( );
 
+        this.timeConvert = cloudServe.timeConvert;
 
-        this.timeConvert = function(value){
-            var a = new Date(value);
-            return a.toDateString();
-        };
         /**
          * Used for testing firebaseObjects
         * */
@@ -121,8 +123,10 @@ angular.module('cloudBlog')
             testObject.$save();
         };
 
-        this.returnTest = function(){
-            return testObject;
+        this.keyTest = function(val){
+            console.log(val);
+            console.log(this.projNames[val]);
+
         };
     })
 /**
@@ -170,8 +174,27 @@ angular.module('cloudBlog')
      * **/
     .controller("projectsCtrl", function (cloudServe, $scope, cloudFireObj, $firebaseObject) {
         this.test = "tester";
-        var splashScope = this;
-        this.blogProjects = cloudFireObj("projects");
+        var projectScope = this;
+        this.blogProjects = [];//cloudFireObj("projects");
+
+        this.getProjects = function(){
+
+            var postsRef = new Firebase('https://nealcloud.firebaseio.com/cloudBlog/posts');
+            var query = postsRef.orderByChild('created').equalTo($scope.$stateParams.projectID);
+            //console.log(query);
+            query.once('value', function(snapshot){
+
+                //projectScope.blogPosts = snapshot.val();
+                //$scope.$digest();
+                projectScope.blogProjects = [];
+                $scope.$apply(
+                    snapshot.forEach(function(child){
+                        projectScope.blogProjects.push({val:child.val(), key:child.key()});
+                    })
+                );
+            });
+        };
+
         //TODO: turn projects into a list to make filters easier
         //var projects = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/projects");
         //this.blogProjects = $firebaseObject(projects);
@@ -202,6 +225,9 @@ angular.module('cloudBlog')
                 console.log("a fail");
             })
     };
+    this.totalHours = function(){
+
+    }
     /**function getProject
      * params post(obj)
      * grabs a Project in a firebase object by a key string based on the current url path
@@ -227,13 +253,20 @@ angular.module('cloudBlog')
             //projectScope.blogPosts = snapshot.val();
             //$scope.$digest();
             projectScope.blogPosts = [];
-            $scope.$apply(
-                snapshot.forEach(function(child){
-                    projectScope.blogPosts.push({val:child.val(), key:child.key()});
-                })
-            );
+            var count = 0;
+            snapshot.forEach(function(child){
+                count += child.val().hours;
+                projectScope.blogPosts.push({val:child.val(), key:child.key()});
+
+            });
+            var projectRef = new Firebase('https://nealcloud.firebaseio.com/cloudBlog/projects/' + $scope.$stateParams.projectID);
+            projectRef.update({hours:count});
+            $scope.$apply( );
         });
     };
+    function yolo(snapshot){
+
+    }
     //edits a post in place
     this.toggleEdit = function (value, key, save) {
         //checks if key property inside temp Post

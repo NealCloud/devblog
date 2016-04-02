@@ -14,6 +14,11 @@ angular.module('cloudBlog')
         this.userData = auth || {}; // the user data
         this.currentProject = ""; // the current project key
 
+
+        this.timeConvert = function(value){
+            var time = new Date(value);
+            return time.toDateString();
+        };
         //setter function to set the current project key used for sending storing key when writing a new post
         this.setCurrentProject = function(value){
             this.currentProject = value + "";
@@ -127,4 +132,12 @@ angular.module('cloudBlog')
             return $firebaseObject(pathRef);
         }
     }
-]);
+])
+.factory("cloudNormObj",
+    function() {
+        return function(path) {
+            var ref = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/");
+            return ref.child(path);
+        }
+    }
+);

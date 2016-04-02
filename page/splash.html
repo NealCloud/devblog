@@ -1,11 +1,13 @@
 <div>
     <h3>Welcome to Neal's Dev Blog</h3>
 
+<!--Some Testing stuff-->
     <input  type="text" ng-model="sc.testFire" ng-change="sc.testChange()">
     <h4>Data: {{ sc.testFire }}</h4>
-    <h4>Data Id: {{ sc.returnTest().$id }}</h4>
+
     <h4>Data Value: {{ sc.testFire.$value }}</h4>
     <button ng-click="sc.keyTest()">key test</button>
+<!--End of Test stuff-->
 
     <h2>Lastest Posts</h2>
     <div ng-repeat="(key,value) in sc.blogPosts">
@@ -14,7 +16,8 @@
             <h4>{{value.title}}</h4>
             <h5>posted on {{sc.timeConvert(value.created)}}</h5>
             <div btf-markdown="value.post"></div>
-            <a  ng-show="value.project" href="index.html#/project/{{value.project}}">Link to Project</a>
+            <a  ng-show="value.project" href="index.html#/project/{{value.project}}">Project: {{sc.projNames[value.project]}}</a>
+            <button ng-click="sc.keyTest(key)">Keytest</button>
         </div>
 
         <!--<div ng-hide="sc.editmode[$index]">-->
