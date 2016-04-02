@@ -40,7 +40,8 @@ angular.module('cloudBlog')
                 collaborators: projectObj.collaborators || user,
                 completed: false,
                 hours: 0,
-                repo: projectObj.repo || null
+                repo: projectObj.repo || null,
+                picture: "https://"
             });
         };
         /** function: create a post

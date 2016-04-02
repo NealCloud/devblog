@@ -10,6 +10,8 @@
     <script src="bower_components/showdown/src/showdown.js"></script>
     <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
     <script src="bower_components/angular-markdown-directive/markdown.js"></script>
+    <link rel="stylesheet" href="bower_components/bulma/css/bulma.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -18,21 +20,35 @@
     <header ng-controller="headCtrl as hc">
 
         <!--logged Out-->
-        <div ng-hide="hc.logged">
+        <div ng-hide="hc.logged" class="navbar-right">
             <input id="username" type="text" placeholder="email" ng-model="hc.name">
             <input type="password" placeholder="password" ng-model="hc.password">
             <button ng-click="hc.logIn(hc.name, hc.password)">Login</button>
         </div>
 
         <!--logged In-->
-        <div ng-show="hc.logged">
-            Hello {{hc.userData.password.email}}
-            <a ui-sref="writeEntry">Write Entry</a>
-            <a ui-sref="landing">Account</a>
-            <a ui-sref="makeProject">create Project</a>
-            <a ui-sref="projects">Projects</a>
-            <button ng-click="hc.logOut()">LogOut</button>
+        <div ng-show="hc.logged"  class="navbar">
+            <p class="navbar-item is-text-centered">
+                {{hc.userData.password.email}}
+            </p>
+            <p class="navbar-item is-text-centered">
+            <a ui-sref="writeEntry" class="link is-info">Write Entry</a>
+            </p>
+            <p class="navbar-item is-text-centered">
+            <a ui-sref="landing" class="link is-info">Account</a>
+            </p>
+            <p class="navbar-item is-text-centered">
+                <a ng-click="hc.logOut()" class="link is-danger">LogOut</a>
+            </p>
+            <p class="navbar-item is-text-centered">
+            <a ui-sref="makeProject" class="link is-info">create Project</a>
+            </p>
+            <p class="navbar-item is-text-centered">
+            <a ui-sref="projects" class="link is-info">Projects</a>
+            </p>
+
         </div>
+
     </header>
 
     <div ui-view></div>

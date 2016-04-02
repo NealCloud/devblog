@@ -2,10 +2,10 @@
  * Created by Mad Martigan on 3/29/2016.
  */
 angular.module('cloudBlog')
-/**
-* controller for the header
- * can call login and out
- * **/
+    /**
+     * controller for the header
+     * can call login and out
+     * **/
     .controller("headCtrl", function (cloudServe, $scope) {
         var headScope = this;
         this.logged = cloudServe.loggedIn;
@@ -38,7 +38,7 @@ angular.module('cloudBlog')
      * controller for posts
      * currently not used
      * **/
-    .controller("postCtrl", function(){
+    .controller("postCtrl", function () {
 
         var postsRef = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/posts");
         this.blogPosts = $firebaseObject(postsRef);
@@ -50,12 +50,12 @@ angular.module('cloudBlog')
 
             if (id in this.editmode) {
                 this.editmode[id] = !this.editmode[id];
-                if(save){
+                if (save) {
                     var editRef = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/posts/" + key);
                     editRef.update(this.blogPosts[key]);
                     //this.blogPosts.$save();
                 }
-                else{
+                else {
                     //console.log("after copy", this.fakeMaster[key]);
                     //angular.copy(this.fakeMaster[key], this.blogPosts[key]);
                 }
@@ -92,11 +92,11 @@ angular.module('cloudBlog')
         this.test = "tester";
         var splashScope = this;
         this.testFire = null;
-        var projRef =  new Firebase("https://nealcloud.firebaseio.com/cloudBlog/projectName");
+        var projRef = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/projectName");
         this.projNames = new $firebaseObject(projRef);
         //TODO: turn projects into a list to make filters easier
         var posts = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/posts");
-        posts.orderByChild("created").startAt(3).limitToLast(2).on("value", function(a){
+        posts.once("value", function (a) {
             console.log(a.val());
             splashScope.blogPosts = a.val();
         });
@@ -106,32 +106,32 @@ angular.module('cloudBlog')
 
         /**
          * Used for testing firebaseObjects
-        * */
+         * */
         var testref = new Firebase("https://nealcloud.firebaseio.com/cloudFire");
         var testObject = new $firebaseObject(testref);
         //testObject.$bindTo($scope, "data");
-        testObject.$loaded().then(function() {
+        testObject.$loaded().then(function () {
             testObject.$value = 233;
             testObject.$save();
             console.log(testObject.$value, testObject.$id); // "bar"
             splashScope.testFire = testObject.$value;
         });
 
-        this.testChange = function(){
+        this.testChange = function () {
             console.log("changin it! ", splashScope.testFire);
             testObject.$value = splashScope.testFire;
             testObject.$save();
         };
 
-        this.keyTest = function(val){
+        this.keyTest = function (val) {
             console.log(val);
             console.log(this.projNames[val]);
 
         };
     })
-/**
- * controller for creating posts
-* */
+    /**
+     * controller for creating posts
+     * */
     .controller("writeBlog", function (cloudServe, $scope, cloudFireObj) {
         var writeScope = this;
         this.blogPost = {};
@@ -142,18 +142,18 @@ angular.module('cloudBlog')
         this.possibleTags = cloudFireObj("tags");
         /** function addTag:
          *  params: tag
-        * */
-        this.addTag = function(tag){
+         * */
+        this.addTag = function (tag) {
             console.log("adding ", tag);
-            if(tag in this.blogPost.tags){
+            if (tag in this.blogPost.tags) {
 
             }
-            else{
+            else {
                 this.blogPost.tags[tag] = tag;
             }
         };
 
-        this.removeTag = function(tag){
+        this.removeTag = function (tag) {
             delete this.blogPost.tags[tag]
         };
 
@@ -170,116 +170,118 @@ angular.module('cloudBlog')
     })
     /**
      * controller for the Projects page
-     * calls a fireObject to show all the projects
+     * calls a fireArray to show all the projects
      * **/
-    .controller("projectsCtrl", function (cloudServe, $scope, cloudFireObj, $firebaseObject, cloudFireArray) {
+    .controller("projectsCtrl", function (cloudServe, $scope, cloudFireArray) {
         this.test = "tester";
+        this.timeConvert = cloudServe.timeConvert;
         var projectScope = this;
         this.blogProjects = cloudFireArray("projects");
-
     })
     /**
      * controller for a Projects page
      * used for displaying/editing/deleting project properties and posts
-    * */
-.controller("projectCtrl", function (cloudServe, $scope, cloudFireObj, $firebaseObject) {
-    var projectScope = this;
-    this.blogProject = {};
-    this.blogPosts = [];
-    this.editmode = {};
-    this.tempPost = {};
-    this.router = "columnOne";
-    this.projects = cloudFireObj("projects");
-/**function postToBlog
- * params post(obj)
- * sends a project to be created in firebase database
-* */
-    this.postToBlog = function (post) {
-        cloudServe.createProject(post)
-            .then(function () {
-                console.log("write success", projectScope.title);
-                projectScope.title = "";
-                $scope.$digest();
-            }, function () {
-                console.log("a fail");
-            })
-    };
-    this.totalHours = function(){
-
-    }
-    /**function getProject
-     * params post(obj)
-     * grabs a Project in a firebase object by a key string based on the current url path
      * */
-    this.getProject = function(){
-        var projectRef = new Firebase('https://nealcloud.firebaseio.com/cloudBlog/projects');
-        this.blogProject = $firebaseObject(projectRef.child($scope.$stateParams.projectID));
-        cloudServe.setCurrentProject($scope.$stateParams.projectID);
-    };
-    /**function getPosts
-     * creates a fireObject of all posts that have same project id and pushes them to blogPosts
-     * */
-    this.testCall = function(){
-        console.log(this.blogPosts);
-    };
-    this.getPosts = function(){
+    .controller("projectCtrl", function (cloudServe, $scope, cloudFireObj, $firebaseObject) {
+        var projectScope = this;
+        this.blogProject = {};
+        this.blogPosts = [];
+        this.editmode = {};
+        this.tempPost = {};
+        this.router = "columnOne";
+        this.projects = cloudFireObj("projects");
 
-        var postsRef = new Firebase('https://nealcloud.firebaseio.com/cloudBlog/posts');
-        var query = postsRef.orderByChild('project').equalTo($scope.$stateParams.projectID);
-        //console.log(query);
-        query.once('value', function(snapshot){
+        /**function postToBlog
+         * params post(obj)
+         * sends a project to be created in firebase database
+         * */
+        this.postToBlog = function (post) {
+            cloudServe.createProject(post)
+                .then(function () {
+                    console.log("write success", projectScope.title);
+                    projectScope.title = "";
+                    $scope.$digest();
+                }, function () {
+                    console.log("a fail");
+                })
+        };
+        this.totalHours = function () {
 
-            //projectScope.blogPosts = snapshot.val();
-            //$scope.$digest();
-            projectScope.blogPosts = [];
-            var count = 0;
-            snapshot.forEach(function(child){
-                count += child.val().hours;
-                projectScope.blogPosts.push({val:child.val(), key:child.key()});
+        }
+        /**function getProject
+         * params post(obj)
+         * grabs a Project in a firebase object by a key string based on the current url path
+         * */
+        this.getProject = function () {
+            var projectRef = new Firebase('https://nealcloud.firebaseio.com/cloudBlog/projects');
+            this.blogProject = $firebaseObject(projectRef.child($scope.$stateParams.projectID));
+            cloudServe.setCurrentProject($scope.$stateParams.projectID);
+        };
+        /**function getPosts
+         * creates a fireObject of all posts that have same project id and pushes them to blogPosts
+         * */
+        this.testCall = function () {
+            console.log(this.blogPosts);
+        };
+        this.getPosts = function () {
 
+            var postsRef = new Firebase('https://nealcloud.firebaseio.com/cloudBlog/posts');
+            var query = postsRef.orderByChild('project').equalTo($scope.$stateParams.projectID);
+            //console.log(query);
+            query.once('value', function (snapshot) {
+
+                //projectScope.blogPosts = snapshot.val();
+                //$scope.$digest();
+                projectScope.blogPosts = [];
+                var count = 0;
+                snapshot.forEach(function (child) {
+                    count += child.val().hours;
+                    projectScope.blogPosts.push({val: child.val(), key: child.key()});
+
+                });
+                var projectRef = new Firebase('https://nealcloud.firebaseio.com/cloudBlog/projects/' + $scope.$stateParams.projectID);
+                projectRef.update({hours: count});
+                $scope.$apply();
             });
-            var projectRef = new Firebase('https://nealcloud.firebaseio.com/cloudBlog/projects/' + $scope.$stateParams.projectID);
-            projectRef.update({hours:count});
-            $scope.$apply( );
-        });
-    };
-    function yolo(snapshot){
+        };
+        function yolo(snapshot) {
 
-    }
-    //edits a post in place
-    this.toggleEdit = function (value, key, save) {
-        //checks if key property inside temp Post
-        if (key in this.tempPost) {
-            //check if user wants to save the edit and update
-            if(save){
-                var editRef = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/posts/" + key);
-                editRef.update(this.tempPost[key])
-                    .then(function(){
-                        console.log("updated!");
-                        delete projectScope.tempPost[key];
-                        projectScope.getPosts();
-                    });
-            }
-            //otherwise delete the temporary property
-            else{
-                delete this.tempPost[key];
-            }
         }
-        else {
-            //if no key in temp create one and copy post info over and create an edit as true
-            this.tempPost[key] = {};
-            angular.copy(value, this.tempPost[key]);
-        }
-    };
+
+        //edits a post in place
+        this.toggleEdit = function (value, key, save) {
+            //checks if key property inside temp Post
+            if (key in this.tempPost) {
+                //check if user wants to save the edit and update
+                if (save) {
+                    var editRef = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/posts/" + key);
+                    editRef.update(this.tempPost[key])
+                        .then(function () {
+                            console.log("updated!");
+                            delete projectScope.tempPost[key];
+                            projectScope.getPosts();
+                        });
+                }
+                //otherwise delete the temporary property
+                else {
+                    delete this.tempPost[key];
+                }
+            }
+            else {
+                //if no key in temp create one and copy post info over and create an edit as true
+                this.tempPost[key] = {};
+                angular.copy(value, this.tempPost[key]);
+            }
+        };
 
 
-    this.deleteData = function (key, path) {
-        console.log("Baleeted", key, path);
-        cloudServe.deleteData(key, path)
-            .then(function () {
-                console.log("Baleeted");
-                projectScope.getPosts();
-            })
-    };
+        this.deleteData = function (key, path) {
+            console.log("Baleeted", key, path);
+            cloudServe.deleteData(key, path)
+                .then(function () {
+                    console.log("Baleeted");
+                    projectScope.getPosts();
+                })
+        };
 
-});
+    });
