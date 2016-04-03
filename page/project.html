@@ -1,4 +1,47 @@
-<div ng-init="pc.getProject(); pc.getPosts()">
+<div ng-init="pc.getProject();pc.getPosts()">
+
+    <nav class="navbar">
+        <div class="navbar-left">
+            <div class="navbar-item">
+                <p class="subtitle is-5">
+                    Total Projects: <strong>{{pc.blogPosts.length}}</strong>
+                </p>
+            </div>
+            <div class="navbar-item">
+                <p class="control has-addons">
+                    <input class="input" type="text" placeholder="Find a project" ng-model="pc.search">
+                </p>
+            </div>
+            <nav class="pagination">
+                <a ng-click="pc.countPage(0)">First</a>
+                <a ng-click="pc.countPage('max')">Last</a>
+                <ul>
+                    <li ng-click="pc.countPage(-1)">
+                        <a>Prev</a>
+                    </li>
+                    <!--<li ng-hide="sc.currPage <= 2">-->
+                    <!--<span>...</span>-->
+                    <!--</li>-->
+                    <li>
+                        <a ng-click="pc.countPage(-1)" ng-class="{'is-disabled' : pc.currPage == 1}">{{pc.currPage - 1}}</a>
+                    </li>
+                    <li>
+                        <a class="is-active">{{pc.currPage}}</a>
+                    </li>
+                    <li  ng-class="{'is-disabled' : pc.currPage >= pc.finalPage}">
+                        <a ng-click="pc.countPage(1)">{{pc.currPage + 1}}</a>
+                    </li>
+                    <!--<li  ng-hide="sc.currPage >= (sc.blogPosts.length / sc.perPage) - 1">-->
+                    <!--<span>...</span>-->
+                    <!--</li>-->
+                    <li ng-click="sc.countPage(1)">
+                        <a>Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </nav>
+
     <!--project template-->
     <h3>{{pc.blogProject.title}}</h3>
     <div>
@@ -8,7 +51,7 @@
             <button ng-click="pc.testCall()">test</button>
         </div>
         <!--Posts Template-->
-        <div ng-repeat="post in pc.blogPosts | orderBy:'val.title'">
+        <div ng-repeat="post in pc.blogPosts | filter : pc.search" ng-if="$index >= pc.minPage && $index <= pc.maxPage">
             <!--regular post-->
             <div ng-hide="pc.tempPost[post.key]">
                 <h3>{{post.val.title}}</h3>

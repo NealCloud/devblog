@@ -1,47 +1,95 @@
 <div>
-    <h3>Welcome to Neal's Dev Blog</h3>
+    <h3>Welcome to Neal's Dev BLAG</h3>
+
+    <nav class="navbar">
+        <div class="navbar-left">
+            <div class="navbar-item">
+                <p class="subtitle is-5">
+                    Total Blags: <strong>{{sc.blogPosts.length}}</strong>
+                </p>
+            </div>
+            <div class="navbar-item">
+                <p class="control has-addons">
+                    <input class="input" type="text" placeholder="Find a post" ng-model="sc.search">
+                </p>
+            </div>
+            <nav class="pagination">
+                <a ng-click="sc.countPage(0)">First</a>
+                <a ng-click="sc.countPage('max')">Last</a>
+                <ul>
+                    <li ng-click="sc.countPage(-1)">
+                        <a>Prev</a>
+                    </li>
+                    <!--<li ng-hide="sc.currPage <= 2">-->
+                        <!--<span>...</span>-->
+                    <!--</li>-->
+                    <li>
+                        <a ng-click="sc.countPage(-1)" ng-class="{'is-disabled' : sc.currPage == 1}">{{sc.currPage - 1}}</a>
+                    </li>
+                    <li>
+                        <a class="is-active">{{sc.currPage}}</a>
+                    </li>
+                    <li  ng-class="{'is-disabled' : sc.currPage >= sc.finalPage}">
+                        <a ng-click="sc.countPage(1)">{{sc.currPage + 1}}</a>
+                    </li>
+                    <!--<li  ng-hide="sc.currPage >= (sc.blogPosts.length / sc.perPage) - 1">-->
+                        <!--<span>...</span>-->
+                    <!--</li>-->
+                    <li ng-click="sc.countPage(1)">
+                        <a>Next</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </nav>
 
 <!--Some Testing stuff-->
-    <input  type="text" ng-model="sc.testFire" ng-change="sc.testChange()">
-    <h4>Data: {{ sc.testFire }}</h4>
+    <!--<input  type="text" ng-model="sc.testFire" ng-change="sc.testChange()">-->
+    <!--<h4>Data: {{ sc.testFire }}</h4>-->
 
-    <h4>Data Value: {{ sc.testFire.$value }}</h4>
-    <button ng-click="sc.keyTest()">key test</button>
+    <!--<h4>Data Value: {{ sc.testFire.$value }}</h4>-->
+    <!--<button ng-click="sc.keyTest()">key test</button>-->
 <!--End of Test stuff-->
 
     <h2>Lastest Posts</h2>
-    <div ng-repeat="(key,value) in sc.blogPosts">
+    <!--<div ng-repeat="post in sc.blogPosts | filter:sc.search">-->
+        <!--<div>-->
+            <!--<h4>{{post.title}}</h4>-->
+            <!--<h5>posted on {{sc.timeConvert(post.created)}}</h5>-->
+            <!--<div btf-markdown="post.post"></div>-->
+            <!--<a  ng-show="post.project" href="index.html#/project/{{post.project}}">Project: {{sc.projNames[post.project]}}</a>-->
+        <!--</div>-->
+    <!--</div>-->
 
-        <div>
-            <h4>{{value.title}}</h4>
-            <h5>posted on {{sc.timeConvert(value.created)}}</h5>
-            <div btf-markdown="value.post"></div>
-            <a  ng-show="value.project" href="index.html#/project/{{value.project}}">Project: {{sc.projNames[value.project]}}</a>
-            <button ng-click="sc.keyTest(key)">Keytest</button>
+
+        <div class="box"  ng-repeat="post in sc.blogPosts | filter:sc.search" ng-if="$index >= sc.minPage && $index <= sc.maxPage">
+            <article class="media">
+                <div class="media-left">
+                    <figure class="image is-64x64">
+                        <img ng-src="images/lakers.png" alt="avatar">
+                    </figure>
+                </div>
+                <div class="media-content">
+                    <div class="content">
+                        <p>
+                            <strong>{{post.title}}</strong> <small>Created: {{pc.timeConvert(post.created)}}</small><small> By{{post.author}}</small>
+                            <br>
+                            <div btf-markdown="post.post"></div>
+                        </p>
+                    </div>
+                    <nav class="navbar">
+                        <div class="navbar-left">
+                            <a ng-show="post.project" class="navbar-item" href="index.html#/project/{{post.project}}">
+                                <span class="icon is-small"><i class="fa fa-reply"></i></span>
+                            </a>
+                            <a class="navbar-item">
+                                <span class="icon is-small"><i class="fa fa-thumbs-up"></i></span>
+                            </a>
+                        </div>
+                    </nav>
+                </div>
+            </article>
         </div>
 
-        <!--<div ng-hide="sc.editmode[$index]">-->
-            <!--<p>Blog Post {{$index}}</p>-->
-            <!--<p >{{value.title}}</p>-->
-            <!--<div btf-markdown="value.post"></div>-->
-            <!--<button ng-click="sc.toggleEdit($index, key)" >Edit</button>-->
-            <!--<button ng-click="sc.deletePost(key)">Delete</button>-->
-        <!--</div>-->
 
-        <!--<div  ng-show="sc.editmode[$index]">-->
-            <!--<p>Blog Edit Post {{$index}}</p>-->
-            <!--<input  ng-model="value.title"><br><br>-->
-            <!--<textarea  ng-model="value.post"></textarea><br>-->
-            <!--<button ng-click="sc.toggleEdit($index, key, true)">Finish</button>-->
-            <!--<button ng-click="sc.toggleEdit($index, key)">Cancel</button>-->
-        <!--</div>-->
-
-        <!--<div  ng-show="sc.editmode[$index]">-->
-                <!--<p>Blog Post {{$index}}</p>-->
-                <!--<p contenteditable="true" ng-model="value.title"></p>-->
-                <!--<p contenteditable="true" ng-model="value.post">{{value.post}}</p>-->
-                <!--<button ng-click="sc.toggleEdit($index)">Finish</button>-->
-        <!--</div>-->
-
-    </div>
 </div>

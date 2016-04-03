@@ -1,41 +1,127 @@
 <div>
     <form>
-        <label for="title">Title</label>
-            <input id="title" type="text" ng-model="wb.blogPost.title" placeholder="Title">
+        <label class="label" for="title">Title</label>
+        <p class="control">
+            <input class="input" id="title" type="text" ng-model="wb.blogPost.title" placeholder="Title">
+            <!--<label class="label">Project: {{wb.projNames[wb.blogPost.project]}}</label>-->
 
-        <label for="project">Project</label>
-        <input id="project" type="password" ng-model="wb.blogPost.project" placeholder="project">
+        </p>
+        <label class="label" for="project">Project</label>
+        <p class="control  has-addons">
+            <span class="select">
+                <select id="projects" ng-model="wb.blogPost.project"
+                        ng-options="key as value for (key,value) in wb.projNames">
+                    <option value="">None</option>
+                </select>
+            </span>
+            <input class="input is-disabled" disabled id="project" type="text" ng-model="wb.blogPost.project" placeholder="project key">
+        </p>
 
-        <label for="body">Body</label>
-        <textarea name="" id="body" cols="30" rows="10" ng-model="wb.blogPost.post"></textarea>
+        <label class="label" for="bodytext">post body</label>
+        <p class="control">
+            <textarea class="textarea" name="bodytext" id="bodytext" cols="30" rows="10"
+                      ng-model="wb.blogPost.post"></textarea>
+        </p>
+        <label class="label" for="problems">Problems</label>
+        <p class="control">
+            <textarea class="textarea" name="problems" id="problems" cols="30" rows="10"
+                      ng-model="wb.blogPost.problems"></textarea>
+        </p>
+        <label class="label"  for="lessons">Lessons Learned</label>
+        <p class="control">
+            <textarea class="textarea" name="lessons" id="lessons" cols="30" rows="10"
+                      ng-model="wb.blogPost.lessons"></textarea>
+        </p>
 
-        <label for="tags">Tags</label>
-        <select id="tags" ng-model="wb.tagSelected" ng-options="item as item for item in wb.possibleTags"></select>
+        <label class="label" for="hours"> Hours </label>
+        <p class="control is-grouped">
+                <input class="input" id="hours" type="number" ng-model="wb.blogPost.hours">
+            <label class="checkbox" for="public">
+                <input id="public" type="checkbox" ng-model="wb.blogPost.public">
+                Public
+            </label>
 
-        <label for="public">Public</label>
-        <input id="public" type="checkbox" ng-model="wb.blogPost.public">
+        </p>
 
-        <label for="hours">Hours</label>
-        <input id="hours" type="number">
+        <p class="control  has-addons">
 
+        </p>
+        <label class="label" for="tags">Tags</label>
         <ul>
-            <li ng-repeat="tag in wb.blogPost.tags">{{tag}} <span ng-click="wb.removeTag(tag)">x</span></li>
+            <li class="tag" ng-class-odd="'is-info'" ng-class-even="'is-dark'" ng-repeat="(key,value) in wb.blogPost.tags">
+                {{key}}
+                <span class="delete is-small"ng-click="wb.removeTag(key)"></span>
+            </li>
         </ul>
+        <br>
+        <p class="control  has-addons">
+            <span class="select">
+            <select id="tags" ng-model="wb.tagSelected"
+                    ng-options="key as key for (key,value) in wb.possibleTags"></select>
+            </span>
+            <a class="button is-info" ng-click="wb.addTag(wb.tagSelected)">Add a tag</a>
+        </p>
 
-        <button ng-click="wb.addTag(wb.tagSelected)">Add a tag</button>
-        <button type="button" ng-click="wb.postToBlog(wb.blogPost)">Post</button>
-
+        <button class="button is-primary is-large" type="button" ng-click="wb.postToBlog(wb.blogPost)">Post</button>
     </form>
+    <br>
+    <h4>PREVIEW</h4>
+    <br>
+    <article class="media">
+        <figure class="media-left">
+            <p class="image is-64x64">
+                <img ng-src="{{wb.avatar}}">
+            </p>
+        </figure>
+        <div class="media-content">
 
-    <h3>{{wb.blogPost.title}}</h3>
-    <div btf-markdown="wb.blogPost.post"></div>
+            <div class="content">
+                <p>
+                    <strong>John Smith</strong>
+                    <small>@johnsmith</small>
+                    <small>31m</small>
+                    <br>
+                </p>
+            </div>
 
-    <div ui-view="{{wb.router}}"></div>
+            <div class="message">
+                <div class="message-header">
+                    {{wb.blogPost.title}}
+                </div>
+                <div btf-markdown="wb.blogPost.post" class="message-body"></div>
+            </div>
+            <div class="message is-warning" ng-show="wb.blogPost.problems">
+                <div class="message-header">
+                    Problems
+                </div>
+                <div btf-markdown="wb.blogPost.problems" class="message-body"></div>
+            </div>
+            <div class="message is-success" ng-show="wb.blogPost.lessons">
+                <div class="message-header">
+                    Lessons
+                </div>
+                <div btf-markdown="wb.blogPost.lessons" class="message-body"></div>
+            </div>
 
-    <button ui-sref=".poke" ng-click="wb.router='columnTwo'">Poke</button>
-    <button ui-sref=".nopoke" ng-click="wb.router='columnOne'">NoPoke</button>
+            <nav class="navbar">
+                <div class="navbar-left">
+                    <span class="icon is-small"><i class="fa fa-tags"></i></span>
 
-    <a ui-sref="writeEntry">noke</a>
-    <p ui-view></p>
+                    <a class="navbar-item" data-ng-repeat="tag in wb.blogPost.tags">
+                        <span class="icon is-small"><i class="fa" ng-class="tag"></i></span>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </article>
+
+    <!--ui routing tests-->
+    <!--<div ui-view="{{wb.router}}"></div>-->
+
+    <!--<button ui-sref=".poke" ng-click="wb.router='columnTwo'">Poke</button>-->
+    <!--<button ui-sref=".nopoke" ng-click="wb.router='columnOne'">NoPoke</button>-->
+
+    <!--<a ui-sref="writeEntry">noke</a>-->
+    <!--<p ui-view></p>-->
 
 </div>

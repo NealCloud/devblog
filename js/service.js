@@ -55,8 +55,10 @@ angular.module('cloudBlog')
                 title: postObj.title || "no title",
                 post: postObj.post || "no words",
                 created: Firebase.ServerValue.TIMESTAMP,
-                tags: postObj.tags || {notag: "notag"},
+                tags: postObj.tags || {notag: "general"},
                 rating: 0,
+                problems: postObj.problems || null,
+                lessons: postObj.lessons || null,
                 public: postObj.public || false,
                 project: postObj.project || "general",
                 hours: postObj.hours || 0
@@ -125,7 +127,6 @@ angular.module('cloudBlog')
                 console.log("logged out!");
             });
         }
-
     })
 /**
  * factory that returns a firebaseObject inside cloudBlog depending on path given
