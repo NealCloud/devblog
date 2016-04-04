@@ -145,7 +145,7 @@ angular.module('cloudBlog')
         this.minPage = 0;
         this.finalPage = 100;
         this.blogPosts = cloudFireArray("posts");
-
+        this.users = cloudFireObj("users");
         this.timeConvert = cloudServe.timeConvert;
 
         this.countPage = function(val){

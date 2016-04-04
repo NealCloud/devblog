@@ -66,13 +66,13 @@
             <article class="media">
                 <div class="media-left">
                     <figure class="image is-64x64">
-                        <img ng-src="images/lakers.png" alt="avatar">
+                        <img ng-src="{{sc.users[post.author].avatar}}" alt="avatar">
                     </figure>
                 </div>
                 <div class="media-content">
                     <div class="content">
                         <p>
-                            <strong>{{post.title}}</strong> <small>Created: {{pc.timeConvert(post.created)}}</small><small> By{{post.author}}</small>
+                            <strong>{{post.title}}</strong> <small>Created on: {{post.created | date: 'short'}}</small><small> Author: {{sc.users[post.author].name}}</small>
                             <br>
                             <div btf-markdown="post.post"></div>
                         </p>
