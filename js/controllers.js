@@ -6,10 +6,13 @@ angular.module('cloudBlog')
      * controller for the header
      * can call login and out
      * **/
-    .controller("headCtrl", function (cloudServe, $scope) {
+    .controller("headCtrl", function (cloudServe,cloudFireObj,  $scope) {
         var headScope = this;
         this.logged = cloudServe.loggedIn;
         this.userData = cloudServe.userData;
+        this.users = cloudFireObj("users");
+
+    //TODO find current state;
 
         this.test = function (param) {
             console.log(param);
@@ -302,7 +305,13 @@ angular.module('cloudBlog')
 
         this.isAuthor = function(value){
             //console.log(value, this.userData.uid);
-            return this.userData.uid == value;
+            if(this.userData){
+                return this.userData.uid == value;
+            }
+            else{
+                return false;
+            }
+
         };
         this.testCall = function () {
             console.log(this.blogProject.author);

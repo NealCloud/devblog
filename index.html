@@ -17,44 +17,67 @@
 
 <body ng-app="cloudBlog" id="bg">
 
-    <header ng-controller="headCtrl as hc">
+<header ng-controller="headCtrl as hc">
 
-        <!--logged Out-->
-        <div ng-hide="hc.logged" class="navbar-right">
+    <!--logged Out-->
+    <div ng-hide="hc.logged" class="navbar-right">
+        <div class="tabs is-toggle is-fullwidth">
+            <ul>
+                <li>
+                    <a ui-sref="landing">Front Page</a>
+                </li>
+                <li>
+                    <a ui-sref="projects">Projects</a>
+                </li>
+                <li>
+                    <a ng-click="hc.logIn(hc.name, hc.password)">Sign In</a>
+                </li>
+
+            </ul>
             <input id="username" type="text" placeholder="email" ng-model="hc.name">
             <input type="password" placeholder="password" ng-model="hc.password">
-            <button ng-click="hc.logIn(hc.name, hc.password)">Login</button>
-        </div>
-
-        <!--logged In-->
-        <div ng-show="hc.logged"  class="navbar">
-            <p class="navbar-item is-text-centered">
-                {{hc.userData.password.email}}
-            </p>
-            <p class="navbar-item is-text-centered">
-            <a ui-sref="writeEntry" class="link is-info">Write Entry</a>
-            </p>
-            <p class="navbar-item is-text-centered">
-            <a ui-sref="landing" class="link is-info">Account</a>
-            </p>
-            <p class="navbar-item is-text-centered">
-                <a ng-click="hc.logOut()" class="link is-danger">LogOut</a>
-            </p>
-            <p class="navbar-item is-text-centered">
-            <a ui-sref="makeProject" class="link is-info">create Project</a>
-            </p>
-            <p class="navbar-item is-text-centered">
-            <a ui-sref="projects" class="link is-info">Projects</a>
-            </p>
 
         </div>
+        <!--<input id="username" type="text" placeholder="email" ng-model="hc.name">-->
+        <!--<input type="password" placeholder="password" ng-model="hc.password">-->
+        <!--<button ng-click="hc.logIn(hc.name, hc.password)">Login</button>-->
+    </div>
 
-    </header>
+    <!--logged In-->
+    <div>
+        <div ng-show="hc.logged" class="tabs is-toggle is-fullwidth">
+            <ul>
+                <li>
+                    {{hc.users[hc.userData.auth.uid].name}}
+                    <img ng-src="{{hc.users[hc.userData.auth.uid].avatar}}" alt="">
+                </li>
+                <li>
+                    <a ui-sref="landing">Front Page</a>
+                </li>
+                <li>
+                    <a ui-sref="projects">Projects</a>
+                </li>
+                <li>
+                    <a ui-sref="writeEntry">Write Entry</a>
+                </li>
+                <li>
+                    <a ui-sref="makeProject">create Project</a>
+                </li>
 
-    <div ui-view class="container"></div>
+                <li>
+                    <a ng-click="hc.logOut()">LogOut</a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+</header>
+
+<div ui-view class="container"></div>
 
 </body>
-    <script src="js/angularApp.js"></script>
-    <script src="js/service.js"></script>
-    <script src="js/controllers.js"></script>
+<script src="js/angularApp.js"></script>
+<script src="js/service.js"></script>
+<script src="js/controllers.js"></script>
 </html>

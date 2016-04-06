@@ -12,7 +12,6 @@
                             ng-change="sc.countPage(0)">
                     </select>
                 </p>
-
             </div>
             <div class="navbar-item">
                 <p class="control has-addons">
@@ -23,9 +22,9 @@
                 <a ng-click="sc.countPage(0)">First</a>
                 <a ng-click="sc.countPage('max')">Last</a>
                 <ul>
-                    <li ng-click="sc.countPage(-1)">
-                        <a>Prev</a>
-                    </li>
+                    <!--<li ng-click="sc.countPage(-1)">-->
+                        <!--<a>Prev</a>-->
+                    <!--</li>-->
                     <!--<li ng-hide="sc.currPage <= 2">-->
                     <!--<span>...</span>-->
                     <!--</li>-->
@@ -36,15 +35,15 @@
                     <li>
                         <a class="is-active">{{sc.currPage}}</a>
                     </li>
-                    <li ng-class="{'is-disabled' : sc.currPage >= sc.finalPage}">
-                        <a ng-click="sc.countPage(1)">{{sc.currPage + 1}}</a>
+                    <li >
+                        <a ng-click="sc.countPage(1)" ng-class="{'is-disabled' : sc.currPage >= sc.finalPage}">{{sc.currPage + 1}} </a>
                     </li>
                     <!--<li  ng-hide="sc.currPage >= (sc.blogPosts.length / sc.perPage) - 1">-->
                     <!--<span>...</span>-->
                     <!--</li>-->
-                    <li ng-click="sc.countPage(1)">
-                        <a>Next</a>
-                    </li>
+                    <!--<li ng-click="sc.countPage(1)">-->
+                        <!--<a>Next</a>-->
+                    <!--</li>-->
                 </ul>
             </nav>
         </div>
