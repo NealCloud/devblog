@@ -4,7 +4,6 @@
         <p class="control">
             <input class="input" id="title" type="text" ng-model="wb.blogPost.title" placeholder="Title">
             <!--<label class="label">Project: {{wb.projNames[wb.blogPost.project]}}</label>-->
-
         </p>
         <label class="label" for="project">Project</label>
         <p class="control  has-addons">
@@ -70,16 +69,16 @@
     <article class="media section">
         <figure class="media-left">
             <p class="image is-64x64">
-                <img ng-src="{{wb.avatar}}">
+                <img ng-src="{{wb.userData.password.profileImageURL}}">
             </p>
         </figure>
         <div class="media-content">
 
             <div class="content">
                 <p>
-                    <strong>John Smith</strong>
-                    <small>@johnsmith</small>
-                    <small>31m</small>
+                    <strong>{{wb.userData.password.email}}</strong>
+                    <small>{{wb.userData.password.email}</small>
+                    <small>{{wb.time | date: "short"}}</small>
                     <br>
                 </p>
             </div>

@@ -6,13 +6,21 @@ angular.module('cloudBlog')
     /**
      * main service used
     * */
-    .service("cloudServe", function () {
+    .service("cloudServe", function ($firebaseAuth) {
         var cloudServScope = this;
         var ref = new Firebase("https://nealcloud.firebaseio.com/cloudBlog"); //main firebase ref
-        var auth = ref.getAuth(); // retrieve auth status from firebase
-        this.loggedIn = auth ? true : false; // establish if logged in
-        this.userData = auth || {}; // the user data
+        var fireAuth = $firebaseAuth(ref); // retrieve auth status from firebase
+        this.userData = fireAuth.$getAuth();
+        this.loggedIn = this.userData ? true : false; // establish if logged in
+       // this.userData = auth || {}; // the user data
         this.currentProject = ""; // the current project key
+
+        fireAuth.$onAuth(function(authData){
+            cloudServScope.userData = authData;
+        });
+        this.testFire = function(){
+            console.log(this.userData);
+        };
 
         this.timeConvert = function(value){
             var time = new Date(value);
@@ -33,23 +41,30 @@ angular.module('cloudBlog')
                 author: this.userData.auth.uid,
                 title: projectObj.title || "big Zero",
                 description: projectObj.description || "no words to describe its awesomeness",
+                goals: projectObj.goals || "",
                 created: Firebase.ServerValue.TIMESTAMP,
-                tags: projectObj.tags || {notag: "notag"},
                 rating: 0,
                 public: projectObj.public || false,
                 collaborators: projectObj.collaborators || user,
                 completed: false,
                 hours: 0,
                 repo: projectObj.repo || null,
-                picture: "https://"
+                picture: projectObj.repo || "https://"
             });
+        };
+        this.createProjectName = function(project, title){
+            ref.child("projectName/" + project).set(
+                title
+            )
         };
         /** function: create a post
          *  params postObj(object) contains all data needed to create a post
          *  uses object data to make a new post in firebase
          * */
         this.createPost = function (postObj) {
-            return ref.child("posts").push({
+            var path = "posts/";
+            if(postObj.project){path = "projects/" + postObj.project + "/posts"};
+            return ref.child(path).push({
                 author: this.userData.auth.uid,
                 avatar: this.userData.password.profileImageURL,
                 title: postObj.title || "no title",
@@ -60,7 +75,6 @@ angular.module('cloudBlog')
                 problems: postObj.problems || null,
                 lessons: postObj.lessons || null,
                 public: postObj.public || false,
-                project: postObj.project || "general",
                 hours: postObj.hours || 0
             });
         };
@@ -90,9 +104,9 @@ angular.module('cloudBlog')
          * */
         this.logIn = function (name, pw) {
             //calls firebase authorize function
-            return ref.authWithPassword({
-                email: "buddy@bob.com",
-                password: "buddybob"
+            return fireAuth.$authWithPassword({
+                email: name,
+                password: pw
             }, function (error, authData) {
                 if (error) {
                     //error detection should be disabled after deployed
@@ -112,7 +126,7 @@ angular.module('cloudBlog')
                 } else {
                     console.log("Authenticated successfully with payload:", authData);
                     cloudServScope.userData = authData;
-                    cloudServScope.loggedIn = false;
+                    cloudServScope.loggedIn = true;
                 }
             });
         };
@@ -121,7 +135,7 @@ angular.module('cloudBlog')
          * */
         this.logOut = function () {
             //calls firebase unauthorize function
-            return ref.unauth(function () {
+            return fireAuth.$unauth(function () {
                 cloudServScope.loggedIn = false;
                 cloudServScope.userData = {};
                 console.log("logged out!");
@@ -144,6 +158,13 @@ angular.module('cloudBlog')
             var ref = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/");
             var pathRef = ref.child(path);
             return $firebaseArray(pathRef);
+        }
+    }
+)
+.factory("cloudFireQuery", function($firebaseArray) {
+        return function(root,child, query) {
+            var ref = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/" + root);
+            return $firebaseArray(ref.orderByChild(child).equalTo(query));
         }
     }
 );

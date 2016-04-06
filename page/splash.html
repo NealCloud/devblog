@@ -5,8 +5,14 @@
         <div class="navbar-left">
             <div class="navbar-item">
                 <p class="subtitle is-5">
-                    Total Blags: <strong>{{sc.blogPosts.length}}</strong>
+                    Total Posts: <strong>{{sc.blogPosts.length}}</strong>
                 </p>
+                <p>
+                    <select ng-model="sc.perPage" ng-options="item for item in [1,2,3,4,5,6,7,8,9,10]" type="number"
+                            ng-change="sc.countPage(0)">
+                    </select>
+                </p>
+
             </div>
             <div class="navbar-item">
                 <p class="control has-addons">
@@ -21,19 +27,20 @@
                         <a>Prev</a>
                     </li>
                     <!--<li ng-hide="sc.currPage <= 2">-->
-                        <!--<span>...</span>-->
+                    <!--<span>...</span>-->
                     <!--</li>-->
                     <li>
-                        <a ng-click="sc.countPage(-1)" ng-class="{'is-disabled' : sc.currPage == 1}">{{sc.currPage - 1}}</a>
+                        <a ng-click="sc.countPage(-1)" ng-class="{'is-disabled' : sc.currPage == 1}">{{sc.currPage -
+                            1}}</a>
                     </li>
                     <li>
                         <a class="is-active">{{sc.currPage}}</a>
                     </li>
-                    <li  ng-class="{'is-disabled' : sc.currPage >= sc.finalPage}">
+                    <li ng-class="{'is-disabled' : sc.currPage >= sc.finalPage}">
                         <a ng-click="sc.countPage(1)">{{sc.currPage + 1}}</a>
                     </li>
                     <!--<li  ng-hide="sc.currPage >= (sc.blogPosts.length / sc.perPage) - 1">-->
-                        <!--<span>...</span>-->
+                    <!--<span>...</span>-->
                     <!--</li>-->
                     <li ng-click="sc.countPage(1)">
                         <a>Next</a>
@@ -43,53 +50,56 @@
         </div>
     </nav>
 
-<!--Some Testing stuff-->
+    <!--Some Testing stuff-->
     <!--<input  type="text" ng-model="sc.testFire" ng-change="sc.testChange()">-->
     <!--<h4>Data: {{ sc.testFire }}</h4>-->
 
     <!--<h4>Data Value: {{ sc.testFire.$value }}</h4>-->
-    <!--<button ng-click="sc.keyTest()">key test</button>-->
-<!--End of Test stuff-->
+    <button ng-click="sc.test()">key test</button>
+    <!--End of Test stuff-->
 
     <h2>Lastest Posts</h2>
     <!--<div ng-repeat="post in sc.blogPosts | filter:sc.search">-->
-        <!--<div>-->
-            <!--<h4>{{post.title}}</h4>-->
-            <!--<h5>posted on {{sc.timeConvert(post.created)}}</h5>-->
-            <!--<div btf-markdown="post.post"></div>-->
-            <!--<a  ng-show="post.project" href="index.html#/project/{{post.project}}">Project: {{sc.projNames[post.project]}}</a>-->
-        <!--</div>-->
+    <!--<div>-->
+    <!--<h4>{{post.title}}</h4>-->
+    <!--<h5>posted on {{sc.timeConvert(post.created)}}</h5>-->
+    <!--<div btf-markdown="post.post"></div>-->
+    <!--<a  ng-show="post.project" href="index.html#/project/{{post.project}}">Project: {{sc.projNames[post.project]}}</a>-->
+    <!--</div>-->
     <!--</div>-->
 
 
-        <div class="box"  ng-repeat="post in sc.blogPosts | filter:sc.search" ng-if="$index >= sc.minPage && $index <= sc.maxPage">
-            <article class="media">
-                <div class="media-left">
-                    <figure class="image is-64x64">
-                        <img ng-src="{{sc.users[post.author].avatar}}" alt="avatar">
-                    </figure>
+    <div class="box" ng-repeat="post in sc.blogPosts | filter:sc.search"
+         ng-if="$index >= sc.minPage && $index <= sc.maxPage">
+        <article class="media">
+            <div class="media-left">
+                <figure class="image is-64x64">
+                    <img ng-src="{{sc.users[post.author].avatar}}" alt="avatar">
+                </figure>
+            </div>
+            <div class="media-content">
+                <div class="content">
+                    <p>
+                        <strong>{{post.title}}</strong>
+                        <small>Created on: {{post.created | date: 'short'}}</small>
+                        <small> Author: {{sc.users[post.author].name}}</small>
+                        <br>
+                    <div btf-markdown="post.post"></div>
+                    </p>
                 </div>
-                <div class="media-content">
-                    <div class="content">
-                        <p>
-                            <strong>{{post.title}}</strong> <small>Created on: {{post.created | date: 'short'}}</small><small> Author: {{sc.users[post.author].name}}</small>
-                            <br>
-                            <div btf-markdown="post.post"></div>
-                        </p>
+                <nav class="navbar">
+                    <div class="navbar-left">
+                        <a ng-show="post.project" class="navbar-item" href="index.html#/project/{{post.project}}">
+                            <span class="icon is-small"><i class="fa fa-reply"></i></span>
+                        </a>
+                        <a class="navbar-item">
+                            <span class="icon is-small"><i class="fa fa-thumbs-up"></i></span>
+                        </a>
                     </div>
-                    <nav class="navbar">
-                        <div class="navbar-left">
-                            <a ng-show="post.project" class="navbar-item" href="index.html#/project/{{post.project}}">
-                                <span class="icon is-small"><i class="fa fa-reply"></i></span>
-                            </a>
-                            <a class="navbar-item">
-                                <span class="icon is-small"><i class="fa fa-thumbs-up"></i></span>
-                            </a>
-                        </div>
-                    </nav>
-                </div>
-            </article>
-        </div>
+                </nav>
+            </div>
+        </article>
+    </div>
 
 
 </div>

@@ -20,6 +20,45 @@ angular.module('cloudBlog')
             cloudServe.logIn(email, password)
                 .then(function (response) {
                     headScope.logged = true;
+                    console.log(response);
+                }, function (error) {
+                    console.log("THE " + error);
+                })
+        };
+
+        this.logOut = function () {
+            cloudServe.logOut()
+                //.then(function () {
+                    headScope.logged = false;
+                    //$scope.$digest();
+                //})
+        }
+    })
+
+    /**
+     * controller for the header
+     * can call login and out
+     * **/
+    .controller("accountCtrl", function (cloudServe, $scope, cloudFireQuery, $firebaseArray) {
+        var accountScope = this;
+        this.logged = cloudServe.loggedIn;
+        this.userData = cloudServe.userData;
+
+        var ref = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/posts/");
+        console.log(this.userData);
+
+        this.test = function (param) {
+            console.log(param);
+            console.log(this.userData);
+        };
+
+        //ref.orderByChild('project').equalTo(this.userData.auth.uid);
+        //this.userPosts = $firebaseArray(ref.orderByChild('author').equalTo(this.userData.auth.uid));
+        //this.userPosts = cloudFireQuery("posts","author",this.userData.auth.uid);
+        this.logIn = function (email, password) {
+            cloudServe.logIn(email, password)
+                .then(function (response) {
+                    accountScope.logged = true;
                     $scope.$digest();
                 }, function (error) {
                     console.log("THE " + error);
@@ -29,11 +68,12 @@ angular.module('cloudBlog')
         this.logOut = function () {
             cloudServe.logOut()
                 .then(function () {
-                    headScope.logged = false;
+                    accountScope.logged = false;
                     $scope.$digest();
                 })
         }
     })
+
     /**
      * controller for posts
      * currently not used
@@ -93,8 +133,10 @@ angular.module('cloudBlog')
         this.blogPost.tags = {};
         this.blogPost.public = true;
         this.router = "columnOne";
-        this.avatar = cloudServe.userData.password.profileImageURL;
+
+        this.userData = cloudServe.userData;
         this.blogPost.project = cloudServe.currentProject;
+
         this.possibleTags = cloudFireObj("tags");
         this.projNames = cloudFireObj("projectName");
 
@@ -102,10 +144,12 @@ angular.module('cloudBlog')
             console.log(val);
         };
 
+        this.time =  Date.now();
         /** function addTag:
          *  params: tag
          * */
         this.addTag = function (tag) {
+            console.log(this.userData.auth.uid);
             console.log("adding ", tag);
             if (tag in this.blogPost.tags) {
 
@@ -121,9 +165,16 @@ angular.module('cloudBlog')
 
         this.postToBlog = function (post) {
             cloudServe.createPost(post)
-                .then(function () {
-                    console.log("write success", writeScope.title);
-                    writeScope.title = "";
+                .then(function (response) {
+                    console.log("write success",writeScope.blogPost.project, writeScope.blogPost.title, writeScope.blogPost.hours);
+                    writeScope.blogPost.title = "";
+                    if(writeScope.blogPost.project){
+                        var projectRef = new Firebase('https://nealcloud.firebaseio.com/cloudBlog/projects/' + writeScope.blogPost.project + "/hours");
+                        projectRef.transaction(function(curHours){
+                            return curHours + writeScope.blogPost.hours;
+                        });
+                    }
+
                     $scope.$digest();
                 }, function () {
                     console.log("a fail");
@@ -134,19 +185,21 @@ angular.module('cloudBlog')
      * controller for the splash page
      * calls a fireObject to show all the projects
      * **/
-    .controller("splashCtrl", function (cloudServe, $scope, $firebaseObject, cloudFireObj, cloudFireArray) {
+    .controller("splashCtrl", function (cloudServe, $scope, $firebaseObject, cloudFireObj, cloudFireArray, $firebaseAuth) {
         this.test = "tester";
         var splashScope = this;
         this.testFire = null;
         this.projNames = cloudFireObj("projectName");
         this.currPage = 1;
-        this.perPage = 2;
+        this.perPage = 4;
         this.maxPage = this.currPage + this.perPage - 2;
         this.minPage = 0;
         this.finalPage = 100;
         this.blogPosts = cloudFireArray("posts");
         this.users = cloudFireObj("users");
+
         this.timeConvert = cloudServe.timeConvert;
+        this.userData = cloudServe.userData;
 
         this.countPage = function(val){
             this.finalPage = Math.ceil(this.blogPosts.length /this.perPage);
@@ -173,11 +226,11 @@ angular.module('cloudBlog')
                 this.currPage += val;
                 this.updatePage(this.perPage);
             }
-
         };
 
         this.test = function(){
-            console.log(this.minPage, this.maxPage);
+            console.log(this.userData);
+            cloudServe.testFire();
         };
 
         this.updatePage = function(val){
@@ -217,11 +270,12 @@ angular.module('cloudBlog')
      * controller for the Projects page
      * calls a fireArray to show all the projects
      * **/
-    .controller("projectsCtrl", function (cloudServe, $scope, cloudFireArray) {
+    .controller("projectsCtrl", function (cloudServe,cloudFireObj, $scope, cloudFireArray) {
         this.test = "tester";
         this.timeConvert = cloudServe.timeConvert;
         var projectScope = this;
         this.blogProjects = cloudFireArray("projects");
+        this.users = cloudFireObj("users");
     })
     /**
      * controller for a Projects page
@@ -230,18 +284,43 @@ angular.module('cloudBlog')
     .controller("projectCtrl", function (cloudServe, $scope, cloudFireObj,cloudFireArray, $firebaseObject) {
         var projectScope = this;
         this.blogProject = {};
-        this.blogPosts = []; //cloudFireArray("posts");
+        this.blogPosts = cloudFireArray("projects/" + $scope.$stateParams.projectID + "/posts");
         this.editmode = {};
         this.tempPost = {};
         this.router = "columnOne";
         this.projects = cloudFireObj("projects");
+        this.users = cloudFireObj("users");
+        this.blogProject.collaborators = {};
+        this.userData = cloudServe.userData;
 
         this.projNames = cloudFireObj("projectName");
         this.currPage = 1;
-        this.perPage = 2;
+        this.perPage = 4;
         this.maxPage = this.currPage + this.perPage - 2;
         this.minPage = 0;
         this.finalPage = 100;
+
+        this.isAuthor = function(value){
+            //console.log(value, this.userData.uid);
+            return this.userData.uid == value;
+        };
+        this.testCall = function () {
+            console.log(this.blogProject.author);
+        };
+
+        this.addPerson = function (id) {
+            console.log("adding ", id);
+            if (id in this.blogProject.collaborators) {
+
+            }
+            else {
+                this.blogProject.collaborators[id] = "true";
+            }
+        };
+
+        this.removeTag = function (person) {
+            delete this.blogProject.collaborators[person];
+        };
 
         this.timeConvert = cloudServe.timeConvert;
 
@@ -290,17 +369,29 @@ angular.module('cloudBlog')
          * */
         this.postToBlog = function (post) {
             cloudServe.createProject(post)
-                .then(function () {
-                    console.log("write success", projectScope.title);
+                .then(function (response) {
+                    console.log("write success", response.key(), post.title);
+                    cloudServe.createProjectName(response.key(), post.title);
                     projectScope.title = "";
                     $scope.$digest();
+
                 }, function () {
                     console.log("a fail");
                 })
         };
         this.totalHours = function () {
+            var count = 0;
+            this.blogPosts.forEach(function (child) {
 
-        }
+                if(child.hasOwnProperty('hours')){
+                    console.log("adding");
+                    count += child.val().hours;
+                }
+            });
+            var projectRef = new Firebase('https://nealcloud.firebaseio.com/cloudBlog/projects/' + $scope.$stateParams.projectID);
+            projectRef.update({hours: count});
+            //$scope.$apply();
+        };
         /**function getProject
          * params post(obj)
          * grabs a Project in a firebase object by a key string based on the current url path
@@ -308,14 +399,13 @@ angular.module('cloudBlog')
         this.getProject = function () {
             var projectRef = new Firebase('https://nealcloud.firebaseio.com/cloudBlog/projects');
             this.blogProject = $firebaseObject(projectRef.child($scope.$stateParams.projectID));
+
             cloudServe.setCurrentProject($scope.$stateParams.projectID);
         };
         /**function getPosts
          * creates a fireObject of all posts that have same project id and pushes them to blogPosts
          * */
-        this.testCall = function () {
-            console.log(this.blogPosts);
-        };
+
 
         this.getPosts = function () {
 
@@ -367,7 +457,6 @@ angular.module('cloudBlog')
             }
         };
 
-
         this.deleteData = function (key, path) {
             console.log("Baleeted", key, path);
             cloudServe.deleteData(key, path)
@@ -377,4 +466,5 @@ angular.module('cloudBlog')
                 })
         };
 
-    });
+    })
+

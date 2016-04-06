@@ -38,7 +38,7 @@
             <div class="media-content">
                 <div class="content">
                     <p>
-                        <strong>{{project.title}}</strong> <small>Created on: {{project.created | date: 'short'}}</small><small> By:{{project.author}}</small>
+                        <strong>{{project.title}}</strong> <small>Created on: {{project.created | date: 'short'}}</small><small> By:{{pc.users[project.author].name}}</small>
                         <br>
                         {{project.description}}
                     </p>

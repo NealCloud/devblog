@@ -1,10 +1,10 @@
-<div ng-init="pc.getProject();pc.getPosts()">
+<div ng-init="pc.getProject()">
 
     <nav class="navbar">
         <div class="navbar-left">
             <div class="navbar-item">
                 <p class="subtitle is-5">
-                    Total Projects: <strong>{{pc.blogPosts.length}}</strong>
+                    Total Posts: <strong>{{pc.blogPosts.length}}</strong>
                 </p>
             </div>
             <div class="navbar-item">
@@ -43,31 +43,134 @@
     </nav>
 
     <!--project template-->
-    <h3>{{pc.blogProject.title}}</h3>
+
     <div>
-        <div>
-            <div btf-markdown="pc.blogProject.description"></div>
-            <button ng-click="pc.deleteData(pc.blogProject.$id, 'projects')">Delete Project</button>
-            <button ng-click="pc.testCall()">test</button>
-        </div>
+
+        <article class="media section">
+            <figure class="media-left">
+                <p class="image is-64x64">
+                    <img ng-src="{{pc.blogProject.picture}}">
+                </p>
+            </figure>
+            <div class="media-content">
+
+                <div class="content">
+                    <p>
+                        <strong>{{pc.blogProject.title}}</strong>
+                        <small>Created By: {{pc.users[pc.blogProject.author].name}} </small>
+                        <small>on {{pc.blogProject.created | date: "short"}}</small>
+                        <a href="{{pc.blogProject.repo}}" class="fa fa-github">CODE REPO</a>
+                        <br>
+                    </p>
+                </div>
+
+                <div class="message">
+                    <div class="message-header">
+                        {{pc.blogProject.title}}
+                    </div>
+                    <div btf-markdown="pc.blogProject.description" class="message-body"></div>
+                </div>
+
+                <div class="message is-success" ng-show="pc.blogProject.goals">
+                    <div class="message-header">
+                        Goals
+                    </div>
+                    <div class="message-body">
+                        <pre btf-markdown="pc.blogProject.goals"></pre>
+                    </div>
+                </div>
+                <div>
+                    Hours Spent
+                </div>
+                <progress class="progress is-primary" value="{{pc.blogProject.hours % 24}}" max="24">15%</progress>
+                <nav class="navbar">
+                    <div class="navbar-left">
+                        <span class="navbar-item icon is-small"> <i class="fa fa-users"></i></span>
+
+                            <li class="tag" ng-class-odd="'is-primary'" ng-class-even="'is-danger'" data-ng-repeat="(person, bool) in pc.blogProject.collaborators">
+                                {{pc.users[person].name}}
+                                <!--<span class="delete is-small"ng-click="wb.removeTag(key)"></span>-->
+                            </li>
+                    </div>
+                </nav>
+            </div>
+
+        </article>
+
+        <button class="button is-danger" ng-click="pc.deleteData(pc.blogProject.$id, 'projects')" ng-show="pc.isAuthor(pc.blogProject.author)">Delete Project</button>
+
+
+
         <!--Posts Template-->
-        <div ng-repeat="post in pc.blogPosts | filter : pc.search" ng-if="$index >= pc.minPage && $index <= pc.maxPage">
-            <!--regular post-->
-            <div ng-hide="pc.tempPost[post.key]">
-                <h3>{{post.val.title}}</h3>
-                <div btf-markdown="post.val.post"></div>
-                <button ng-click="pc.toggleEdit(post.val, post.key)">Edit</button>
-                <button ng-click="pc.deleteData(post.key, 'posts')">Delete</button>
+        <article class="media section" ng-repeat="post in pc.blogPosts | filter : pc.search" ng-if="$index >= pc.minPage && $index <= pc.maxPage">
+            <figure class="media-left">
+                <p class="image is-64x64">
+                    <img ng-src="{{pc.users[post.author].avatar}}">
+                </p>
+            </figure>
+            <div class="media-content">
+
+                <div class="content">
+                    <p>
+                        <strong>{{pc.users[post.author].name}}</strong>
+                        <small>{{pc.users[post.author].email}}</small>
+                        <small>{{post.created | date: "short"}}</small>
+                        <br>
+                    </p>
+                </div>
+
+                <div class="message">
+                    <div class="message-header">
+                        {{post.title}}
+                    </div>
+                    <div btf-markdown="post.post" class="message-body"></div>
+                </div>
+                <div class="message is-warning" ng-show="post.problems">
+                    <div class="message-header">
+                        Problems
+                    </div>
+                    <div btf-markdown="post.problems" class="message-body"></div>
+                </div>
+                <div class="message is-success" ng-show="post.lessons">
+                    <div class="message-header">
+                        Lessons
+                    </div>
+                    <div class="message-body">
+                        <pre btf-markdown="post.lessons"></pre>
+                    </div>
+                </div>
+
+                <nav class="navbar">
+                    <div class="navbar-left">
+                        <span class="navbar-item icon is-small"> <i class="fa fa-tags"></i></span>
+
+                        <a class="navbar-item" data-ng-repeat="tag in post.tags">
+                            <span class="icon is-small"><i class="fa" ng-class="tag"></i></span>
+                        </a>
+                    </div>
+                </nav>
             </div>
-            <!--edit mode post-->
-            <div ng-show="pc.tempPost[post.key]">
-                <p>Blog Edit Post {{$index}}</p>
-                <input ng-model="pc.tempPost[post.key].title"><br><br>
-                <textarea ng-model="pc.tempPost[post.key].post"></textarea><br>
-                <button ng-click="pc.toggleEdit(post.val, post.key, true)">Finish</button>
-                <button ng-click="pc.toggleEdit(post.val, post.key)">Cancel</button>
-            </div>
-        </div>
+        </article>
+
+
+        <!---->
+        <!--<div ng-repeat="post in pc.blogPosts | filter : pc.search" ng-if="$index >= pc.minPage && $index <= pc.maxPage">-->
+            <!--&lt;!&ndash;regular post&ndash;&gt;-->
+            <!--<div ng-hide="pc.tempPost[post.key]">-->
+                <!--<h3>{{post.val.title}}</h3>-->
+                <!--<div btf-markdown="post.val.post"></div>-->
+                <!--<button ng-click="pc.toggleEdit(post.val, post.key)">Edit</button>-->
+                <!--<button ng-click="pc.deleteData(post.key, 'posts')">Delete</button>-->
+            <!--</div>-->
+            <!--&lt;!&ndash;edit mode post&ndash;&gt;-->
+            <!--<div ng-show="pc.tempPost[post.key]">-->
+                <!--<p>Blog Edit Post {{$index}}</p>-->
+                <!--<input ng-model="pc.tempPost[post.key].title"><br><br>-->
+                <!--<textarea ng-model="pc.tempPost[post.key].post"></textarea><br>-->
+                <!--<button ng-click="pc.toggleEdit(post.val, post.key, true)">Finish</button>-->
+                <!--<button ng-click="pc.toggleEdit(post.val, post.key)">Cancel</button>-->
+            <!--</div>-->
+        <!--</div>-->
 
     </div>
 </div>

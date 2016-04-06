@@ -1,0 +1,32 @@
+<div ng-hide="ac.logged" class="navbar-right">
+    <input id="username" type="text" placeholder="email" ng-model="ac.name">
+    <input type="password" placeholder="password" ng-model="ac.password">
+    <button ng-click="ac.logIn(ac.name, ac.password)">Login</button>
+</div>
+
+<div ng-show="ac.logged"  class="navbar">
+
+    <p class="navbar-item is-text-centered">
+        <img ng-src="{{ac.userData.password.profileImageURL}}" alt="">
+    </p>
+    <p class="navbar-item is-text-centered">
+        <a ui-sref="writeEntry" class="link is-info">Write Entry</a>
+    </p>
+    <p class="navbar-item is-text-centered">
+        <a ui-sref="landing" class="link is-info">Account</a>
+    </p>
+    <p class="navbar-item is-text-centered">
+        <a ng-click="hc.logOut()" class="link is-danger">LogOut</a>
+    </p>
+    <p class="navbar-item is-text-centered">
+        <a ui-sref="makeProject" class="link is-info">create Project</a>
+    </p>
+    <p class="navbar-item is-text-centered">
+        <a ui-sref="projects" class="link is-info">Projects</a>
+    </p>
+</div>
+
+<button ng-click="ac.test()">TEST</button>
+<div ng-repeat="post in ac.userPosts">
+    <p>{{post.post}}</p>
+</div>
