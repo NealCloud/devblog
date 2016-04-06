@@ -295,7 +295,7 @@ angular.module('cloudBlog')
 
         this.projNames = cloudFireObj("projectName");
         this.currPage = 1;
-        this.perPage = 4;
+        this.perPage = 3;
         this.maxPage = this.currPage + this.perPage - 2;
         this.minPage = 0;
         this.finalPage = 100;

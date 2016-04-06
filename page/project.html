@@ -1,5 +1,5 @@
 <div ng-init="pc.getProject()">
-
+<!-- Nav Bar-->
     <nav class="navbar">
         <div class="navbar-left">
             <div class="navbar-item">
@@ -16,9 +16,9 @@
                 <a ng-click="pc.countPage(0)">First</a>
                 <a ng-click="pc.countPage('max')">Last</a>
                 <ul>
-                    <li ng-click="pc.countPage(-1)">
-                        <a>Prev</a>
-                    </li>
+                    <!--<li ng-click="pc.countPage(-1)">-->
+                        <!--<a>Prev</a>-->
+                    <!--</li>-->
                     <!--<li ng-hide="sc.currPage <= 2">-->
                     <!--<span>...</span>-->
                     <!--</li>-->
@@ -28,15 +28,15 @@
                     <li>
                         <a class="is-active">{{pc.currPage}}</a>
                     </li>
-                    <li  ng-class="{'is-disabled' : pc.currPage >= pc.finalPage}">
-                        <a ng-click="pc.countPage(1)">{{pc.currPage + 1}}</a>
+                    <li >
+                        <a  ng-class="{'is-disabled' : pc.currPage >= pc.finalPage}" ng-click="pc.countPage(1)">{{pc.currPage + 1}}</a>
                     </li>
                     <!--<li  ng-hide="sc.currPage >= (sc.blogPosts.length / sc.perPage) - 1">-->
                     <!--<span>...</span>-->
                     <!--</li>-->
-                    <li ng-click="sc.countPage(1)">
-                        <a>Next</a>
-                    </li>
+                    <!--<li ng-click="sc.countPage(1)">-->
+                        <!--<a>Next</a>-->
+                    <!--</li>-->
                 </ul>
             </nav>
         </div>
@@ -98,8 +98,6 @@
         </article>
 
         <button class="button is-danger" ng-click="pc.deleteData(pc.blogProject.$id, 'projects')" ng-show="pc.isAuthor(pc.blogProject.author)">Delete Project</button>
-
-
 
         <!--Posts Template-->
         <article class="media section" ng-repeat="post in pc.blogPosts | filter : pc.search" ng-if="$index >= pc.minPage && $index <= pc.maxPage">
