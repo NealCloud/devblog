@@ -11,15 +11,24 @@ angular.module('cloudBlog')
         this.logged = cloudServe.loggedIn;
         this.userData = cloudServe.userData;
         this.users = cloudFireObj("users");
+        var userFireAuth = cloudServe.fireThis;
 
     //TODO find current state;
 
         this.test = function (param) {
-            console.log(param);
-            console.log(this.userData);
+            console.log($scope.$state, $scope.$stateParams);
+            console.log("userr", this.userData, "fire", userFireAuth, "logged:", this.logged);
         };
 
+
+        userFireAuth.$onAuth(function(authData){
+            //console.log("authorizeD by freeThis!", authData);
+            headScope.userData = authData;
+            headScope.logged = cloudServe.loggedIn;
+        });
+
         this.logIn = function (email, password) {
+            console.log("signing in");
             cloudServe.logIn(email, password)
                 .then(function (response) {
                     headScope.logged = true;
@@ -30,7 +39,7 @@ angular.module('cloudBlog')
         };
 
         this.logOut = function () {
-            cloudServe.logOut()
+            cloudServe.logOut();
                 //.then(function () {
                     headScope.logged = false;
                     //$scope.$digest();
@@ -42,38 +51,68 @@ angular.module('cloudBlog')
      * controller for the header
      * can call login and out
      * **/
-    .controller("accountCtrl", function (cloudServe, $scope, cloudFireQuery, $firebaseArray) {
+    .controller("accountCtrl", function (cloudServe, $scope,cloudFireObj, cloudFireQuery, $firebaseArray) {
         var accountScope = this;
         this.logged = cloudServe.loggedIn;
-        this.userData = cloudServe.userData;
+        this.userAuth = cloudServe.userData;
+        this.userInfo = {};
+        this.editName = false;
+        var userFireAuth = cloudServe.fireThis;
+        this.users = cloudFireObj("users" );
 
-        var ref = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/posts/");
-        console.log(this.userData);
-
-        this.test = function (param) {
+        this.testAccount = function (param) {
             console.log(param);
-            console.log(this.userData);
+            console.log("auth:", this.userAuth,"info: ", this.userInfo,"logged: ", this.logged);
         };
+
+        userFireAuth.$onAuth(function(authData){
+            console.log("authorizeD by freeThis!", authData);
+            accountScope.userAuth = authData;
+            accountScope.logged = cloudServe.loggedIn;
+            if(authData){
+                accountScope.userInfo = cloudFireObj("users/" + authData.auth.uid);
+            }
+            else{
+                accountScope.userInfo = authData;
+            }
+
+        });
 
         //ref.orderByChild('project').equalTo(this.userData.auth.uid);
         //this.userPosts = $firebaseArray(ref.orderByChild('author').equalTo(this.userData.auth.uid));
         //this.userPosts = cloudFireQuery("posts","author",this.userData.auth.uid);
         this.logIn = function (email, password) {
+            console.log("signing in");
             cloudServe.logIn(email, password)
                 .then(function (response) {
                     accountScope.logged = true;
-                    $scope.$digest();
+                    accountScope.userAuth = response;
+                    console.log(response);
                 }, function (error) {
                     console.log("THE " + error);
                 })
         };
 
         this.logOut = function () {
-            cloudServe.logOut()
-                .then(function () {
-                    accountScope.logged = false;
-                    $scope.$digest();
-                })
+            cloudServe.logOut();
+            //.then(function () {
+            accountScope.logged = false;
+            //$scope.$digest();
+            //})
+        }
+
+        this.saveData = function(){
+            this.userInfo.$save();
+            this.toggleEditName();
+        }
+
+        this.toggleEditName = function(){
+            this.editName = !this.editName;
+        };
+
+        this.cancelSave = function(){
+            this.userInfo = cloudFireObj("users/" + this.userAuth.auth.uid);
+            this.toggleEditName();
         }
     })
 
@@ -302,7 +341,7 @@ angular.module('cloudBlog')
         this.maxPage = this.currPage + this.perPage - 2;
         this.minPage = 0;
         this.finalPage = 100;
-
+        this.projectHidden = false;
         this.isAuthor = function(value){
             //console.log(value, this.userData.uid);
             if(this.userData){
@@ -313,6 +352,10 @@ angular.module('cloudBlog')
             }
 
         };
+
+        this.hideProject = function(){
+            this.projectHidden = !this.projectHidden;
+        }
         this.testCall = function () {
             console.log(this.blogProject.author);
         };

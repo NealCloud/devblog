@@ -10,14 +10,17 @@ angular.module('cloudBlog')
         var cloudServScope = this;
         var ref = new Firebase("https://nealcloud.firebaseio.com/cloudBlog"); //main firebase ref
         var fireAuth = $firebaseAuth(ref); // retrieve auth status from firebase
+        this.fireThis = fireAuth ;
         this.userData = fireAuth.$getAuth();
         this.loggedIn = this.userData ? true : false; // establish if logged in
        // this.userData = auth || {}; // the user data
         this.currentProject = ""; // the current project key
 
         fireAuth.$onAuth(function(authData){
-            cloudServScope.userData = authData;
+            //console.log("authorizeD by fireAuth!", authData);
+            //cloudServScope.userData = authData;
         });
+
         this.testFire = function(){
             console.log(this.userData);
         };

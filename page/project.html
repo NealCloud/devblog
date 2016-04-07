@@ -20,6 +20,7 @@
             <nav class="pagination">
                 <a ng-click="pc.countPage(0)">First</a>
                 <a ng-click="pc.countPage('max')">Last</a>
+                <a ng-class="{'is-active': pc.projectHidden}" ng-click="pc.hideProject()">Project Display</a>
                 <ul>
                     <!--<li ng-click="pc.countPage(-1)">-->
                         <!--<a>Prev</a>-->
@@ -43,6 +44,7 @@
                         <!--<a>Next</a>-->
                     <!--</li>-->
                 </ul>
+
             </nav>
         </div>
     </nav>
@@ -51,7 +53,7 @@
 
     <div>
 
-        <article class="media section">
+        <article ng-hide="pc.projectHidden" class="media section">
             <figure class="media-left">
                 <p class="image is-64x64">
                     <img ng-src="{{pc.blogProject.picture}}">
@@ -65,6 +67,7 @@
                         <small>Created By: {{pc.users[pc.blogProject.author].name}} </small>
                         <small>on {{pc.blogProject.created | date: "short"}}</small>
                         <a href="{{pc.blogProject.repo}}" class="fa fa-github">CODE REPO</a>
+
                         <br>
                     </p>
                 </div>

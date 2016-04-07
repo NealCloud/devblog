@@ -20,7 +20,7 @@
 <header ng-controller="headCtrl as hc">
 
     <!--logged Out-->
-    <div ng-hide="hc.logged" class="navbar-right">
+    <div ng-hide="hc.userData" class="navbar-right">
         <div class="tabs is-toggle is-fullwidth">
             <ul>
                 <li>
@@ -30,12 +30,17 @@
                     <a ui-sref="projects">Projects</a>
                 </li>
                 <li>
-                    <a ng-click="hc.logIn(hc.name, hc.password)">Sign In</a>
+                    <!--<a ng-click="hc.logIn(hc.name, hc.password)">Sign In</a>-->
+                    <a ui-sref="account">Sign In</a>
                 </li>
 
             </ul>
-            <input id="username" type="text" placeholder="email" ng-model="hc.name">
-            <input type="password" placeholder="password" ng-model="hc.password">
+            <!--<label class="label">-->
+                <!--<p class="control">-->
+                    <!--<input id="username" type="text" placeholder="email" ng-model="hc.name">-->
+                    <!--<input type="password" placeholder="password" ng-model="hc.password">-->
+                <!--</p>-->
+            <!--</label>-->
 
         </div>
         <!--<input id="username" type="text" placeholder="email" ng-model="hc.name">-->
@@ -45,34 +50,35 @@
 
     <!--logged In-->
     <div>
-        <div ng-show="hc.logged" class="tabs is-toggle is-fullwidth">
+        <div ng-show="hc.userData" class="tabs is-toggle is-fullwidth">
             <ul>
-                <li>
-                    {{hc.users[hc.userData.auth.uid].name}}
-                    <img ng-src="{{hc.users[hc.userData.auth.uid].avatar}}" alt="">
+                <li ng-class="{'is-active': $state.includes('account')}">
+                    <a ui-sref="account">{{hc.users[hc.userData.auth.uid].name}}</a>
+                    <!--<img ng-src="{{hc.users[hc.userData.auth.uid].avatar}}" alt="">-->
                 </li>
-                <li>
-                    <a ui-sref="landing">Front Page</a>
+                <li ng-class="{'is-active': $state.includes('landing')}">
+                    <a  ui-sref="landing">Front Page</a>
                 </li>
-                <li>
+                <li ng-class="{'is-active': $state.includes('projects')}">
                     <a ui-sref="projects">Projects</a>
                 </li>
-                <li>
+                <li ng-class="{'is-active': $state.includes('writeEntry')}">
                     <a ui-sref="writeEntry">Write Entry</a>
                 </li>
-                <li>
+                <li ng-class="{'is-active': $state.includes('makeProject')}">
                     <a ui-sref="makeProject">create Project</a>
                 </li>
 
                 <li>
-                    <a ng-click="hc.logOut()">LogOut</a>
+                    <a  ng-click="hc.logOut()">LogOut</a>
                 </li>
             </ul>
 
         </div>
     </div>
-
+    <!--<button ng-click="hc.test()">yo</button>-->
 </header>
+
 
 <div ui-view class="container"></div>
 

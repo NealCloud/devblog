@@ -1,32 +1,71 @@
-<div ng-hide="ac.logged" class="navbar-right">
-    <input id="username" type="text" placeholder="email" ng-model="ac.name">
-    <input type="password" placeholder="password" ng-model="ac.password">
-    <button ng-click="ac.logIn(ac.name, ac.password)">Login</button>
+<div ng-hide="ac.userAuth" class="navbar-right">
+
+    <label class="label">
+        <p class="control">
+            <input id="username" type="text" placeholder="email" ng-model="ac.name">
+            <input type="password" placeholder="password" ng-model="ac.password">
+        </p>
+    </label>
+
+    <button class="button is-primary" ng-click="ac.logIn(ac.name, ac.password)">Login</button>
 </div>
 
-<div ng-show="ac.logged"  class="navbar">
 
-    <p class="navbar-item is-text-centered">
-        <img ng-src="{{ac.userData.password.profileImageURL}}" alt="">
-    </p>
-    <p class="navbar-item is-text-centered">
-        <a ui-sref="writeEntry" class="link is-info">Write Entry</a>
-    </p>
-    <p class="navbar-item is-text-centered">
-        <a ui-sref="landing" class="link is-info">Account</a>
-    </p>
-    <p class="navbar-item is-text-centered">
-        <a ng-click="hc.logOut()" class="link is-danger">LogOut</a>
-    </p>
-    <p class="navbar-item is-text-centered">
-        <a ui-sref="makeProject" class="link is-info">create Project</a>
-    </p>
-    <p class="navbar-item is-text-centered">
-        <a ui-sref="projects" class="link is-info">Projects</a>
-    </p>
-</div>
+<table ng-show="ac.userAuth" class="table">
+    <thead>
+    <tr>
+        <th>Account</th>
+        <th>Value</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-hide="ac.editName">
+        <td>Name</td>
+        <td>{{ac.userInfo.name}}</td>
+        <td class="table-link table-icon">
+            <a ng-click="ac.toggleEditName()">
+                edit
+                <i class="fa fa-twitter "></i>
+            </a>
+        </td>
+    </tr>
+    <tr ng-show="ac.editName">
+        <td>Name</td>
+        <td><input type="text" ng-model="ac.userInfo.name"></td>
+        <td class="table-link table-icon">
+            <a ng-click="ac.saveData()">
+                Save
+                <i class="fa fa-twitter"></i>
+            </a>
+        </td>
+        <td class="table-link table-icon">
+            <a ng-click="ac.cancelSave()">Cancel
+                <i class="fa fa-twitter"></i>
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td>Email</td>
+        <td>{{ac.users[ac.userAuth.auth.uid].email}}</td>
+        <td class="table-link table-icon">
+            <a href="">
+            Save
+            <i class="fa fa-twitter "></i>
+        </a>
+        </td>
+    </tr>
+    <tr>
+        <td>Avatar</td>
+        <td>{{ac.users[ac.userAuth.auth.uid].avatar}}</td>
+        <td class="table-link table-icon">
+            <a href="#">
+                <i class="fa fa-twitter"></i>
+            </a>
+        </td>
+    </tr>
+    </tbody>
+</table>
 
-<button ng-click="ac.test()">TEST</button>
-<div ng-repeat="post in ac.userPosts">
-    <p>{{post.post}}</p>
-</div>
+<!--<button ng-click="ac.testAccount()">Test</button>-->
