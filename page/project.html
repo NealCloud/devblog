@@ -14,7 +14,7 @@
             </div>
             <div class="navbar-item">
                 <p class="control has-addons">
-                    <input class="input" type="text" placeholder="Find a project" ng-model="pc.search">
+                    <input class="input" type="text" placeholder="Search posts" ng-model="pc.search">
                 </p>
             </div>
             <nav class="pagination">
@@ -105,7 +105,7 @@
 
         </article>
 
-        <button class="button is-danger" ng-click="pc.deleteData(pc.blogProject.$id, 'projects')" ng-show="pc.isAuthor(pc.blogProject.author)">Delete Project</button>
+        <button class="button is-danger" ng-click="pc.deleteData(pc.blogProject.$id, 'projects')" >Delete Project</button>
 
         <!--Posts Template-->
         <article class="media section" ng-repeat="post in pc.blogPosts | filter : pc.search" ng-if="$index >= pc.minPage && $index <= pc.maxPage">
@@ -180,3 +180,5 @@
 
     </div>
 </div>
+
+<div ui-view="deleteModal"></div>

@@ -91,9 +91,19 @@ angular.module('cloudBlog', ['ui.router', "firebase", "btford.markdown"])
             * */
             .state('project', {
                 url: '/project/:projectID',
-                templateUrl: 'page/project.html',
-                controller: 'projectCtrl',
-                controllerAs: 'pc'
+                views: {
+                    // the main template is blank
+                    '': { templateUrl: 'page/project.html',
+                        controller: 'projectCtrl',
+                        controllerAs: 'pc'
+                    },
+                    // the child views uses @ to seperate it from parent  html ex: ui-view="columnOne"
+                    'deleteModal@project': {
+                        templateUrl: 'page/deleteModal.html',
+                        controller: 'projectCtrl',
+                        controllerAs: 'pc'
+                    }
+                }
             })
     })
     /**

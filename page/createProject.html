@@ -52,7 +52,7 @@
         <label class="label" for="tags">Collaborators</label>
         <ul>
             <li class="tag" ng-class-odd="'is-info'" ng-class-even="'is-dark'" ng-repeat="(key,value) in pc.blogProject.collaborators">
-                {{value}}
+                {{pc.users[key].name}}
                 <span class="delete is-small"ng-click="pc.removeTag(key)"></span>
             </li>
         </ul>

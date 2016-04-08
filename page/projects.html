@@ -29,7 +29,7 @@
     <div class="box"  ng-repeat="project in pc.blogProjects | filter: {title:pc.search}">
         <article class="media">
             <div class="media-left">
-                <figure ng-show="{{project.picture}}" class="image is-64x64">
+                <figure class="image is-64x64">
                     <img ng-src="{{project.picture}}" alt="Image">
                 </figure>
             </div>
@@ -41,7 +41,7 @@
                         {{project.description}}
                     </p>
                 </div>
-                <a ng-show="{{project.repo}}" href="{{project.repo}}" target="_blank" class="fa fa-github">Repo</a>
+                <a href="{{project.repo}}" target="_blank" class="fa fa-github">Repo</a>
                 <nav class="navbar">
                     <div class="navbar-left">
                         <a class="navbar-item" href="index.html#/project/{{project.$id}}">

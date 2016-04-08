@@ -366,6 +366,7 @@ angular.module('cloudBlog')
         this.projects = cloudFireObj("projects");
         this.users = cloudFireObj("users");
         this.blogProject.collaborators = {};
+        this.blogProject.public = true;
         this.userData = cloudServe.userData;
 
         this.projNames = cloudFireObj("projectName");
@@ -552,9 +553,14 @@ angular.module('cloudBlog')
                 angular.copy(value, this.tempPost[key]);
             }
         };
+        this.deleteData = function(){
+            console.log("yes");
+            $("#deleteModal").toggle('is-active');
+        };
 
-        this.deleteData = function (key, path) {
+        this.completeDelete = function (key, path) {
             console.log("Baleeted", key, path);
+
             cloudServe.deleteData(key, path)
                 .then(function () {
                     console.log("Baleeted");
@@ -562,5 +568,5 @@ angular.module('cloudBlog')
                 })
         };
 
-    })
+    });
 
