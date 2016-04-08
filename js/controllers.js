@@ -243,14 +243,15 @@ angular.module('cloudBlog')
                 .then(function (response) {
                     console.log("write success",writeScope.blogPost.project, writeScope.blogPost.title, writeScope.blogPost.hours);
                     writeScope.blogPost.title = "";
-                    if(writeScope.blogPost.project){
+                    $scope.$state.go('project', {projectID: writeScope.blogPost.project});
+                    if(writeScope.blogPost.project && writeScope.blogPost.hours){
                         var projectRef = new Firebase('https://nealcloud.firebaseio.com/cloudBlog/projects/' + writeScope.blogPost.project + "/hours");
                         projectRef.transaction(function(curHours){
                             return curHours + writeScope.blogPost.hours;
                         });
                     }
 
-                    $scope.$digest();
+                    //$scope.$digest();
                 }, function () {
                     console.log("a fail");
                 })
@@ -480,7 +481,8 @@ angular.module('cloudBlog')
                     console.log("write success", response.key(), post.title);
                     cloudServe.createProjectName(response.key(), post.title);
                     projectScope.title = "";
-                    $scope.$digest();
+                    $scope.$state.go('projects');
+                    //$scope.$digest();
 
                 }, function () {
                     console.log("a fail");
