@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Cloud Dev Blog</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.2/jquery.min.js"></script>
+    <script src="bower_components/angular/angular.js"></script>
+    <script src="bower_components/firebase/firebase.js"></script>
+    <script src="bower_components/angularfire/dist/angularfire.js"></script>
+    <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
+    <script src="bower_components/showdown/src/showdown.js"></script>
+    <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
+    <script src="bower_components/angular-markdown-directive/markdown.js"></script>
+    <link rel="stylesheet" href="bower_components/bulma/css/bulma.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body ng-app="cloudBlog" id="bg">
+
+<!--Nav bar-->
+<header ng-controller="headCtrl as hc">
+
+    <!--logged Out-->
+    <div ng-hide="hc.userData" class="navbar-right">
+        <div class="tabs is-toggle is-fullwidth">
+            <ul>
+                <li>
+                    <a ui-sref="landing">Front Page</a>
+                </li>
+                <li>
+                    <a ui-sref="projects">Projects</a>
+                </li>
+                <li>
+                    <!--<a ng-click="hc.logIn(hc.name, hc.password)">Sign In</a>-->
+                    <a ui-sref="account">Sign In</a>
+                </li>
+
+            </ul>
+            <!--<label class="label">-->
+            <!--<p class="control">-->
+            <!--<input id="username" type="text" placeholder="email" ng-model="hc.name">-->
+            <!--<input type="password" placeholder="password" ng-model="hc.password">-->
+            <!--</p>-->
+            <!--</label>-->
+
+        </div>
+        <!--<input id="username" type="text" placeholder="email" ng-model="hc.name">-->
+        <!--<input type="password" placeholder="password" ng-model="hc.password">-->
+        <!--<button ng-click="hc.logIn(hc.name, hc.password)">Login</button>-->
+    </div>
+
+    <!--logged In-->
+    <div>
+        <div ng-show="hc.userData" class="tabs is-toggle is-fullwidth">
+            <ul>
+                <li ng-class="{'is-active': $state.includes('account')}">
+                    <a ui-sref="account">{{hc.users[hc.userData.auth.uid].name}}</a>
+                    <!--<img ng-src="{{hc.users[hc.userData.auth.uid].avatar}}" alt="">-->
+                </li>
+                <li ng-class="{'is-active': $state.includes('landing')}">
+                    <a ui-sref="landing">Front Page</a>
+                </li>
+                <li ng-class="{'is-active': $state.includes('projects')}">
+                    <a ui-sref="projects">Projects</a>
+                </li>
+                <li ng-class="{'is-active': $state.includes('writeEntry')}">
+                    <a ui-sref="writeEntry">Write Entry</a>
+                </li>
+                <li ng-class="{'is-active': $state.includes('makeProject')}">
+                    <a ui-sref="makeProject">create Project</a>
+                </li>
+
+                <li>
+                    <a ng-click="hc.logOut()">LogOut</a>
+                </li>
+            </ul>
+
+        </div>
+    </div>
+
+</header>
+
+<!--Main Content-->
+
+<div ui-view class="container">
+
+
+</div>
+
+</body>
+<script src="js/angularApp.js"></script>
+<script src="js/service.js"></script>
+<script src="js/controllers.js"></script>
+</html>
