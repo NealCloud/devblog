@@ -130,6 +130,7 @@ angular.module('cloudBlog')
                     console.log("Authenticated successfully with payload:", authData);
                     cloudServScope.userData = authData;
                     cloudServScope.loggedIn = true;
+
                 }
             });
         };
@@ -143,10 +144,25 @@ angular.module('cloudBlog')
                 cloudServScope.userData = {};
                 console.log("logged out!");
             });
-        }
+        };
+
+        this.createUser = function(email, password){
+            return fireAuth.$createUser({
+                email: email,
+                password: password
+            }).then(function(userData) {
+               return userData.uid;
+            }).catch(function(error) {
+                return  error;
+            });
+        };
+
+        this.createUserName = function(userid, info){
+            ref.child("users/" + userid).update(info);
+        };
     })
 /**
- * factory that returns a firebaseObject inside cloudBlog depending on path given
+ * factorys that return a firebaseObject or array depending on path given
 * */
 .factory("cloudFireObj", ["$firebaseObject", function($firebaseObject) {
         return function(path) {

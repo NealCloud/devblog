@@ -34,6 +34,12 @@ angular.module('cloudBlog', ['ui.router', "firebase", "btford.markdown"])
                 controller: 'accountCtrl',
                 controllerAs: 'ac'
             })
+            .state('createAccount', {
+                url: '/createAccount',
+                templateUrl: 'page/createAccount.html',
+                controller: 'accountCtrl',
+                controllerAs: 'ac'
+            })
             .state('projects',{
                 url: '/projects',
                 templateUrl: 'page/projects.html',

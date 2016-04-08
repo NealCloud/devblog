@@ -1,15 +1,26 @@
-<div ng-hide="ac.userAuth" class="navbar-right">
 
-    <label class="label">
-        <p class="control">
-            <input id="username" type="text" placeholder="email" ng-model="ac.name">
-            <input type="password" placeholder="password" ng-model="ac.password">
-        </p>
-    </label>
-
-    <button class="button is-primary" ng-click="ac.logIn(ac.name, ac.password)">Login</button>
-</div>
-
+<table class="table" ng-hide="ac.userAuth">
+    <thead>
+    <tr>
+        <th>Sign In</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Email</td>
+        <td><input type="text" ng-model="ac.name"></td>
+    </tr>
+    <tr>
+        <td>Password</td>
+        <td><input type="text" ng-model="ac.password"></td>
+    </tr>
+    </tbody>
+    <tr>
+        <td><button class="button is-primary" ng-click="ac.logIn(ac.name, ac.password)">Login</button></td>
+        <td> <button class="button is-primary pull-right" ui-sref="createAccount">Create New Account</button></td>
+    </tr>
+</table>
 
 <table ng-show="ac.userAuth" class="table">
     <thead>
@@ -27,7 +38,7 @@
         <td class="table-link table-icon">
             <a ng-click="ac.toggleEditName()">
                 edit
-                <i class="fa fa-twitter "></i>
+                <i class="fa fa-eraser"></i>
             </a>
         </td>
     </tr>
@@ -37,12 +48,12 @@
         <td class="table-link table-icon">
             <a ng-click="ac.saveData()">
                 Save
-                <i class="fa fa-twitter"></i>
+                <i class="fa fa-save"></i>
             </a>
         </td>
         <td class="table-link table-icon">
             <a ng-click="ac.cancelSave()">Cancel
-                <i class="fa fa-twitter"></i>
+                <i class="fa fa-times"></i>
             </a>
         </td>
     </tr>
@@ -51,20 +62,21 @@
         <td>{{ac.users[ac.userAuth.auth.uid].email}}</td>
         <td class="table-link table-icon">
             <a href="">
-            Save
-            <i class="fa fa-twitter "></i>
+            Change (not yet implemented)
+            <i class="fa fa-envelope"></i>
         </a>
         </td>
     </tr>
     <tr>
         <td>Avatar</td>
-        <td>{{ac.users[ac.userAuth.auth.uid].avatar}}</td>
+        <td><img src="{{ac.users[ac.userAuth.auth.uid].avatar}}" alt=""></td>
         <td class="table-link table-icon">
-            <a href="#">
-                <i class="fa fa-twitter"></i>
+            <a href="http://www.gravatar.com" target="_blank">Powered by Gravatar
+                <i class="fa fa-fort-awesome"></i>
             </a>
         </td>
     </tr>
+
     </tbody>
 </table>
 

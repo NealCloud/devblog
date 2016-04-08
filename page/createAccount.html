@@ -1,0 +1,25 @@
+<table class="table">
+    <thead>
+    <tr>
+        <th>Account</th>
+        <th>Required</th>
+
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr>
+        <td>Name</td>
+        <td><input type="text" ng-model="ac.newUser.name"></td>
+    </tr>
+    <tr>
+        <td>Email</td>
+        <td><input type="text" ng-model="ac.newUser.email"></td>
+    </tr>
+    <tr>
+        <td>Password</td>
+        <td><input type="text" ng-model="ac.newUser.password"></td>
+    </tr>
+    </tbody>
+</table>
+<button class="button is-success" ng-click="ac.createUser()">Create</button>

@@ -59,6 +59,7 @@ angular.module('cloudBlog')
         this.editName = false;
         var userFireAuth = cloudServe.fireThis;
         this.users = cloudFireObj("users" );
+        this.newUser = {};
 
         this.testAccount = function (param) {
             console.log(param);
@@ -75,8 +76,38 @@ angular.module('cloudBlog')
             else{
                 accountScope.userInfo = authData;
             }
-
         });
+
+
+        this.createUser = function(){
+            console.log(this.newUser);
+            cloudServe.createUser(this.newUser.email, this.newUser.password)
+                .then(function(response){
+                    console.log(typeof response, response);
+                    if(typeof response == "object"){
+                        console.log("failed");
+                    }
+                    else{
+                        console.log("createding Name in database");
+                        accountScope.newUser.password = null;
+                        if(!accountScope.newUser.name) accountScope.newUser.name = "LazyDude" + (Math.floor(Math.random() * 1000));
+                        cloudServe.createUserName(response, accountScope.newUser);
+                        accountScope.newUser = {};
+                        $scope.$state.go('account');
+                    }
+
+                });
+
+
+            //Auth.$removeUser({
+            //    email: $scope.email,
+            //    password: $scope.password
+            //}).then(function() {
+            //    $scope.message = "User removed";
+            //}).catch(function(error) {
+            //    $scope.error = error;
+            //});
+        };
 
         //ref.orderByChild('project').equalTo(this.userData.auth.uid);
         //this.userPosts = $firebaseArray(ref.orderByChild('author').equalTo(this.userData.auth.uid));
@@ -87,6 +118,8 @@ angular.module('cloudBlog')
                 .then(function (response) {
                     accountScope.logged = true;
                     accountScope.userAuth = response;
+                    var avatarRef = new Firebase("https://nealcloud.firebaseio.com/cloudBlog"); //main firebase ref
+                    avatarRef.child("users/" + response.uid).update({avatar:response.password.profileImageURL});
                     console.log(response);
                 }, function (error) {
                     console.log("THE " + error);
@@ -420,6 +453,17 @@ angular.module('cloudBlog')
          * sends a project to be created in firebase database
          * */
         this.postToBlog = function (post) {
+            cloudServe.createProject(post)
+                .then(function (response) {
+                    console.log("write success", response.key(), post.title);
+                    projectScope.title = "";
+                    $scope.$digest();
+
+                }, function () {
+                    console.log("a fail");
+                })
+        };
+        this.createProject = function (post) {
             cloudServe.createProject(post)
                 .then(function (response) {
                     console.log("write success", response.key(), post.title);

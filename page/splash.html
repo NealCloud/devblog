@@ -1,13 +1,15 @@
 <div>
+    <div id="pageTop"></div>
     <h3 class="title is-3">Welcome to Dev Blog</h3>
 
-    <nav class="navbar">
+    <nav class="navbar" >
         <div class="navbar-left">
             <div class="navbar-item">
                 <p class="subtitle is-5">
                     Total Posts: <strong>{{sc.blogPosts.length}}</strong>
                 </p>
                 <p>
+                    Per Page
                     <select ng-model="sc.perPage" ng-options="item for item in [1,2,3,4,5,6,7,8,9,10]" type="number"
                             ng-change="sc.countPage(0)">
                     </select>
@@ -54,7 +56,7 @@
     <!--<h4>Data: {{ sc.testFire }}</h4>-->
 
     <!--<h4>Data Value: {{ sc.testFire.$value }}</h4>-->
-    <button ng-click="sc.test()">key test</button>
+    <!--<button ng-click="sc.test()">key test</button>-->
     <!--End of Test stuff-->
 
     <h2>Lastest Posts</h2>
@@ -66,7 +68,6 @@
     <!--<a  ng-show="post.project" href="index.html#/project/{{post.project}}">Project: {{sc.projNames[post.project]}}</a>-->
     <!--</div>-->
     <!--</div>-->
-
 
     <div class="box" ng-repeat="post in sc.blogPosts | filter:sc.search"
          ng-if="$index >= sc.minPage && $index <= sc.maxPage">
@@ -94,11 +95,15 @@
                         <a class="navbar-item">
                             <span class="icon is-small"><i class="fa fa-thumbs-up"></i></span>
                         </a>
+                        <a class="navbar-item" data-ng-repeat="(icon, tag) in post.tags">
+                            <span class="icon is-small"><i class="fa" ng-class="tag"></i></span>
+                            <p>{{title}}</p>
+                        </a>
                     </div>
                 </nav>
             </div>
         </article>
     </div>
 
-
 </div>
+<a href="#pageTop">Top of Page</a>
