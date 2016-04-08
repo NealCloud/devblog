@@ -10,7 +10,7 @@
             <span class="select">
                 <select id="projects" ng-model="wb.blogPost.project"
                         ng-options="key as value for (key,value) in wb.projNames">
-                    <option value="">None</option>
+                    <option value="">Front Page</option>
                 </select>
             </span>
             <input class="input is-disabled" disabled id="project" type="text" ng-model="wb.blogPost.project" placeholder="project key">
@@ -21,18 +21,18 @@
             <textarea class="textarea" name="bodytext" id="bodytext" cols="30" rows="10"
                       ng-model="wb.blogPost.post"></textarea>
         </p>
-        <label class="label" for="problems">Problems</label>
+        <label class="label" for="problems">Problems*</label>
         <p class="control">
             <textarea class="textarea" name="problems" id="problems" cols="30" rows="10"
                       ng-model="wb.blogPost.problems"></textarea>
         </p>
-        <label class="label"  for="lessons">Lessons Learned</label>
+        <label class="label"  for="lessons">Lessons Learned*</label>
         <p class="control">
             <textarea class="textarea" name="lessons" id="lessons" cols="30" rows="10"
                       ng-model="wb.blogPost.lessons"></textarea>
         </p>
 
-        <label class="label" for="hours"> Hours </label>
+        <label class="label" for="hours"> Hours* </label>
         <p class="control is-grouped">
                 <input class="input" id="hours" type="number" ng-model="wb.blogPost.hours">
             <label class="checkbox" for="public">
@@ -64,7 +64,8 @@
         <button class="button is-primary is-large" type="button" ng-click="wb.postToBlog(wb.blogPost)">Post</button>
     </form>
     <br>
-    <h4>PREVIEW</h4>
+    <p>*only displayed in project posts</p>
+    <h4 class="titel is-4">PREVIEW</h4>
     <br>
     <article class="media section">
         <figure class="media-left">

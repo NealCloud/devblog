@@ -20,7 +20,7 @@
             <nav class="pagination">
                 <a ng-click="pc.countPage(0)">First</a>
                 <a ng-click="pc.countPage('max')">Last</a>
-                <a ng-class="{'is-active': pc.projectHidden}" ng-click="pc.hideProject()">Project Display</a>
+                <a ng-class="{'is-active': !pc.projectHidden}" ng-click="pc.hideProject()">Project Displayed</a>
                 <ul>
                     <!--<li ng-click="pc.countPage(-1)">-->
                         <!--<a>Prev</a>-->
@@ -66,7 +66,7 @@
                         <strong>{{pc.blogProject.title}}</strong>
                         <small>Created By: {{pc.users[pc.blogProject.author].name}} </small>
                         <small>on {{pc.blogProject.created | date: "short"}}</small>
-                        <a href="{{pc.blogProject.repo}}" class="fa fa-github">CODE REPO</a>
+                        <a href="{{pc.blogProject.repo}}" class="fa fa-github" target="_blank">CODE REPO</a>
 
                         <br>
                     </p>
@@ -102,7 +102,7 @@
                     </div>
                 </nav>
             </div>
-            <button class="button is-danger" ng-click="pc.projectModal(pc.blogProject.$id, 'projects')" >Delete Project</button>
+            <button ng-show="pc.isAuthor(pc.blogProject.author)" class="button is-danger" ng-click="pc.projectModal(pc.blogProject.$id, 'projects')" >Delete Project</button>
         </article>
 
 
@@ -122,7 +122,6 @@
                 <div class="content">
                     <p>
                         <strong>{{pc.users[post.author].name}}</strong>
-                        <small>{{pc.users[post.author].email}}</small>
                         <small>{{post.created | date: "short"}}</small>
                         <br>
                     </p>

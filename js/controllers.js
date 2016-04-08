@@ -276,7 +276,6 @@ angular.module('cloudBlog')
         this.timeConvert = cloudServe.timeConvert;
         this.userData = cloudServe.userData;
 
-
         this.scrollTo = function(id) {
             console.log("scrollin");
             var old = $location.hash();
@@ -386,6 +385,7 @@ angular.module('cloudBlog')
         this.minPage = 0;
         this.finalPage = 100;
         this.projectHidden = false;
+
         this.isAuthor = function(value){
             //console.log(value, this.userData.uid);
             if(this.userData){

@@ -19,6 +19,7 @@ angular.module('cloudBlog')
         fireAuth.$onAuth(function(authData){
             //console.log("authorizeD by fireAuth!", authData);
             //cloudServScope.userData = authData;
+            cloudServScope.userData = authData;
         });
 
         this.testFire = function(){
@@ -52,7 +53,7 @@ angular.module('cloudBlog')
                 completed: false,
                 hours: 0,
                 repo: projectObj.repo || null,
-                picture: projectObj.repo || "https://"
+                picture: projectObj.picture || "https://"
             });
         };
         this.createProjectName = function(project, title){
