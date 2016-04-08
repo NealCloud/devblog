@@ -99,7 +99,7 @@ angular.module('cloudBlog', ['ui.router', "firebase", "btford.markdown"])
                     },
                     // the child views uses @ to seperate it from parent  html ex: ui-view="columnOne"
                     'deleteModal@project': {
-                        templateUrl: 'page/deleteModal.html',
+                        templateUrl: 'page/projectModal.html',
                         controller: 'projectCtrl',
                         controllerAs: 'pc'
                     }

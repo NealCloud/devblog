@@ -260,7 +260,7 @@ angular.module('cloudBlog')
      * controller for the splash page
      * calls a fireObject to show all the projects
      * **/
-    .controller("splashCtrl", function (cloudServe, $scope, $firebaseObject, cloudFireObj, cloudFireArray, $firebaseAuth) {
+    .controller("splashCtrl", function (cloudServe, $location,$anchorScroll, $scope, $firebaseObject, cloudFireObj, cloudFireArray, $firebaseAuth) {
         this.test = "tester";
         var splashScope = this;
         this.testFire = null;
@@ -275,6 +275,16 @@ angular.module('cloudBlog')
 
         this.timeConvert = cloudServe.timeConvert;
         this.userData = cloudServe.userData;
+
+
+        this.scrollTo = function(id) {
+            console.log("scrollin");
+            var old = $location.hash();
+            $location.hash(id);
+            $anchorScroll();
+            //reset to old to keep any additional routing logic from kicking in
+            $location.hash(old);
+        };
 
         this.countPage = function(val){
             this.finalPage = Math.ceil(this.blogPosts.length /this.perPage);
@@ -553,9 +563,15 @@ angular.module('cloudBlog')
                 angular.copy(value, this.tempPost[key]);
             }
         };
-        this.deleteData = function(){
-            console.log("yes");
-            $("#deleteModal").toggle('is-active');
+        this.projectModal = function(a,b){
+
+            console.log("yes",a,b);
+            $("#projectModal").toggle('is-active');
+
+        };
+
+        this.toggleModal = function(){
+            $("#projectModal").toggle('is-active');
         };
 
         this.completeDelete = function (key, path) {

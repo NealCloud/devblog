@@ -102,10 +102,13 @@
                     </div>
                 </nav>
             </div>
-
+            <button class="button is-danger" ng-click="pc.projectModal(pc.blogProject.$id, 'projects')" >Delete Project</button>
         </article>
 
-        <button class="button is-danger" ng-click="pc.deleteData(pc.blogProject.$id, 'projects')" >Delete Project</button>
+
+
+
+
 
         <!--Posts Template-->
         <article class="media section" ng-repeat="post in pc.blogPosts | filter : pc.search" ng-if="$index >= pc.minPage && $index <= pc.maxPage">

@@ -5,6 +5,7 @@
  * controller for a Projects page
  * used for displaying/editing/deleting project properties and posts
  * */
+angular.module('tempApp')
 .controller("projectCtrl", function (cloudServe, $scope, cloudFireObj,cloudFireArray, $firebaseObject) {
     var projectScope = this;
     this.blogProject = {};
