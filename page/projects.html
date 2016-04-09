@@ -36,7 +36,7 @@
             <div class="media-content">
                 <div class="content">
                     <p>
-                        <strong>{{project.title}}</strong> <small>Created on: {{project.created | date: 'short'}}</small><small> By:{{pc.users[project.author].name}}</small>
+                        <a  href="index.html#/project/{{project.$id}}"><strong>{{project.title}}</strong></a> <small>Created on: {{project.created | date: 'short'}}</small><small> By:{{pc.users[project.author].name}}</small>
                         <br>
                         {{project.description}}
                     </p>
