@@ -132,12 +132,12 @@ angular.module('cloudBlog')
             accountScope.logged = false;
             //$scope.$digest();
             //})
-        }
+        };
 
         this.saveData = function(){
             this.userInfo.$save();
             this.toggleEditName();
-        }
+        };
 
         this.toggleEditName = function(){
             this.editName = !this.editName;
@@ -565,6 +565,43 @@ angular.module('cloudBlog')
                 angular.copy(value, this.tempPost[key]);
             }
         };
+
+        this.postTest = function(val, key){
+            console.log(this.tempPost, val, key);
+            this.tempPost[key] = {};
+            this.tempPost[key].title = val.title;
+            this.tempPost[key].post = val.post;
+            this.tempPost[key].lessons = val.lessons;
+            this.tempPost[key].problems = val.problems;
+        };
+
+        this.saveTest = function(val, index, key){
+            console.log(this.tempPost[key]);
+            val.title = this.tempPost[key].title;
+            val.post = this.tempPost[key].post;
+            val.lessons = this.tempPost[key].lessons;
+            val.problems = this.tempPost[key].problems;
+            projectScope.blogPosts.$save(index)
+                .then(function(){
+                    console.log("yo");
+                    projectScope.cancelTest(key);
+                });
+        };
+
+        this.cancelTest = function(key){
+            delete this.tempPost[key];
+        };
+
+        this.getDays = function(num) {
+            var dayArray = [];
+            var days = Math.floor(num / 24);
+
+            for(var i = 0; i < days; i++){
+                dayArray.push(i);
+            }
+            return dayArray;
+        };
+
         this.projectModal = function(a,b){
 
             console.log("yes",a,b);

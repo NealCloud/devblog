@@ -1,5 +1,5 @@
 <div ng-init="pc.getProject()">
-<!-- Nav Bar-->
+    <!-- Nav Bar-->
     <nav class="navbar">
         <div class="navbar-left">
             <div class="navbar-item">
@@ -23,25 +23,27 @@
                 <a ng-class="{'is-active': !pc.projectHidden}" ng-click="pc.hideProject()">Project Displayed</a>
                 <ul>
                     <!--<li ng-click="pc.countPage(-1)">-->
-                        <!--<a>Prev</a>-->
+                    <!--<a>Prev</a>-->
                     <!--</li>-->
                     <!--<li ng-hide="sc.currPage <= 2">-->
                     <!--<span>...</span>-->
                     <!--</li>-->
                     <li>
-                        <a ng-click="pc.countPage(-1)" ng-class="{'is-disabled' : pc.currPage == 1}">{{pc.currPage - 1}}</a>
+                        <a ng-click="pc.countPage(-1)" ng-class="{'is-disabled' : pc.currPage == 1}">{{pc.currPage -
+                            1}}</a>
                     </li>
                     <li>
                         <a class="is-active">{{pc.currPage}}</a>
                     </li>
-                    <li >
-                        <a  ng-class="{'is-disabled' : pc.currPage >= pc.finalPage}" ng-click="pc.countPage(1)">{{pc.currPage + 1}}</a>
+                    <li>
+                        <a ng-class="{'is-disabled' : pc.currPage >= pc.finalPage}" ng-click="pc.countPage(1)">{{pc.currPage
+                            + 1}}</a>
                     </li>
                     <!--<li  ng-hide="sc.currPage >= (sc.blogPosts.length / sc.perPage) - 1">-->
                     <!--<span>...</span>-->
                     <!--</li>-->
                     <!--<li ng-click="sc.countPage(1)">-->
-                        <!--<a>Next</a>-->
+                    <!--<a>Next</a>-->
                     <!--</li>-->
                 </ul>
 
@@ -64,7 +66,7 @@
                 <div class="content">
                     <p>
                         <strong>{{pc.blogProject.title}}</strong>
-                        <small>Created By: {{pc.users[pc.blogProject.author].name}} </small>
+                        <small>Created By: {{pc.users[pc.blogProject.author].name}}</small>
                         <small>on {{pc.blogProject.created | date: "short"}}</small>
                         <a href="{{pc.blogProject.repo}}" class="fa fa-github" target="_blank">CODE REPO</a>
 
@@ -83,101 +85,202 @@
                     <div class="message-header">
                         Goals
                     </div>
-                    <div class="message-body" >
+                    <div class="message-body">
                         <div btf-markdown="pc.blogProject.goals"></div>
                     </div>
                 </div>
                 <div>
                     Hours Spent
                 </div>
-                <progress class="progress is-primary" value="{{pc.blogProject.hours % 24}}" max="24">15%</progress>
+                <progress class="progress is-primary" value="{{pc.blogProject.hours % 24}}" max="24"></progress>
+
+                Days/Nights Spent
+                <nav class="navbar">
+                    <div class="navbar-left">
+                        <span class="navbar-item icon is-small"> <i class="fa fa-calendar"></i></span>
+                            <span class="navbar-item icon is-small" ng-repeat="day in pc.getDays(pc.blogProject.hours)">
+                                <i class="fa" ng-class-odd="'fa-star-o'" ng-class-even="'fa-moon-o'"></i>
+                            </span>
+                    </div>
+                </nav>
+
+
                 <nav class="navbar">
                     <div class="navbar-left">
                         <span class="navbar-item icon is-small"> <i class="fa fa-users"></i></span>
 
-                            <li class="tag" ng-class-odd="'is-primary'" ng-class-even="'is-danger'" data-ng-repeat="(person, bool) in pc.blogProject.collaborators">
-                                {{pc.users[person].name}}
-                                <!--<span class="delete is-small"ng-click="wb.removeTag(key)"></span>-->
-                            </li>
+                        <li class="tag" ng-class-odd="'is-primary'" ng-class-even="'is-danger'"
+                            data-ng-repeat="(person, bool) in pc.blogProject.collaborators">
+                            {{pc.users[person].name}}
+                            <!--<span class="delete is-small"ng-click="wb.removeTag(key)"></span>-->
+                        </li>
                     </div>
                 </nav>
             </div>
-            <button ng-show="pc.isAuthor(pc.blogProject.author)" class="button is-danger" ng-click="pc.projectModal(pc.blogProject.$id, 'projects')" >Delete Project</button>
+            <button ng-show="pc.isAuthor(pc.blogProject.author)" class="button is-danger"
+                    ng-click="pc.projectModal(pc.blogProject.$id, 'projects')">Delete Project
+            </button>
         </article>
 
 
-
-
-
-
         <!--Posts Template-->
-        <article class="media section" ng-repeat="post in pc.blogPosts | filter : pc.search" ng-if="$index >= pc.minPage && $index <= pc.maxPage">
-            <figure class="media-left">
-                <p class="image is-64x64">
-                    <img ng-src="{{pc.users[post.author].avatar}}">
-                </p>
-            </figure>
-            <div class="media-content">
-
-                <div class="content">
-                    <p>
-                        <strong>{{pc.users[post.author].name}}</strong>
-                        <small>{{post.created | date: "short"}}</small>
-                        <br>
+        <article class="media section" ng-repeat="post in pc.blogPosts | filter : pc.search"
+                 ng-if="$index >= pc.minPage && $index <= pc.maxPage">
+            <div ng-hide="pc.tempPost[post.$id]">
+                <figure class="media-left">
+                    <p class="image is-64x64">
+                        <img ng-src="{{pc.users[post.author].avatar}}">
                     </p>
+                </figure>
+                <div class="media-content">
+
+                    <div class="content">
+                        <p>
+                            <strong>{{pc.users[post.author].name}}</strong>
+                            <small>{{post.created | date: "short"}}</small>
+                            <br>
+                        </p>
+                    </div>
+
+                    <div class="message">
+                        <div class="message-header">
+                            {{post.title}}
+                        </div>
+                        <div btf-markdown="post.post" class="message-body"></div>
+                    </div>
+                    <div class="message is-warning" ng-show="post.problems">
+                        <div class="message-header">
+                            Problems
+                        </div>
+                        <div btf-markdown="post.problems" class="message-body"></div>
+                    </div>
+                    <div class="message is-success" ng-show="post.lessons">
+                        <div class="message-header">
+                            Lessons
+                        </div>
+                        <div class="message-body">
+                            <div btf-markdown="post.lessons"></div>
+                        </div>
+                    </div>
+
+                    <nav class="navbar">
+                        <div class="navbar-left">
+                            <span class="navbar-item icon is-small"> <i class="fa fa-tags"></i></span>
+
+                            <a class="navbar-item" data-ng-repeat="tag in post.tags">
+                                <span class="icon is-small"><i class="fa" ng-class="tag"></i></span>
+                            </a>
+                        </div>
+                    </nav>
                 </div>
 
-                <div class="message">
-                    <div class="message-header">
-                        {{post.title}}
+                <a class="button is-info"  ng-click="pc.postTest(post, post.$id)">
+                      <span class="icon">
+                        <i class="fa fa-check"></i>
+                      </span>
+                    <span>Edit</span>
+                </a>
+
+            </div>
+            <!--edit post-->
+            <div ng-show="pc.tempPost[post.$id]">
+                <figure class="media-left">
+                    <p class="image is-64x64">
+                        <img ng-src="{{pc.users[post.author].avatar}}">
+                    </p>
+                </figure>
+                <div class="media-content">
+
+                    <div class="content">
+                        <p>
+                            <strong>{{pc.users[post.author].name}}</strong>
+                            <small>{{post.created | date: "short"}}</small>
+                            <br>
+                        </p>
                     </div>
-                    <div btf-markdown="post.post" class="message-body"></div>
-                </div>
-                <div class="message is-warning" ng-show="post.problems">
-                    <div class="message-header">
-                        Problems
-                    </div>
-                    <div btf-markdown="post.problems" class="message-body"></div>
-                </div>
-                <div class="message is-success" ng-show="post.lessons">
-                    <div class="message-header">
-                        Lessons
+
+                    <div class="message">
+                        <input class="message-header" ng-model="pc.tempPost[post.$id].title">
                     </div>
                     <div class="message-body">
-                        <div btf-markdown="post.lessons"></div>
+                        <div>
+                        <textarea ng-model="pc.tempPost[post.$id].post" class="message-body"></textarea>
+                            </div>
                     </div>
+
+                    <div class="message is-warning" ng-show="post.problems">
+                        <div class="message-header">
+                            Problems
+                        </div>
+                        <div class="message-body">
+                            <div>
+                                <textarea ng-model="pc.tempPost[post.$id].problems" class="message-body"></textarea>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="message is-success" ng-show="post.lessons">
+                        <div class="message-header">
+                            Lessons
+                        </div>
+                        <div class="message-body">
+                            <div>
+                                <div>
+                                    <textarea ng-model="pc.tempPost[post.$id].lessons" class="message-body"></textarea>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <nav class="navbar">
+                        <div class="navbar-left">
+                            <span class="navbar-item icon is-small"> <i class="fa fa-tags"></i></span>
+
+                            <a class="navbar-item" data-ng-repeat="tag in post.tags">
+                                <span class="icon is-small"><i class="fa" ng-class="tag"></i></span>
+                            </a>
+                        </div>
+                    </nav>
                 </div>
 
-                <nav class="navbar">
-                    <div class="navbar-left">
-                        <span class="navbar-item icon is-small"> <i class="fa fa-tags"></i></span>
 
-                        <a class="navbar-item" data-ng-repeat="tag in post.tags">
-                            <span class="icon is-small"><i class="fa" ng-class="tag"></i></span>
-                        </a>
-                    </div>
-                </nav>
+                <!--<a class="button is-success" ng-click="pc.saveTest(post, $index, post.$id)">-->
+                    <!--Save <i class="fa fa-save"></i>-->
+                <!--</a>-->
+                <a class="button is-success" ng-click="pc.saveTest(post, $index, post.$id)">
+                      <span class="icon">
+                        <i class="fa fa-check"></i>
+                      </span>
+                    <span>Save</span>
+                </a>
+                <a class="button is-danger" ng-click="pc.cancelTest(post.$id)">
+                      <span class="icon">
+                        <i class="fa fa-ban"></i>
+                      </span>
+                    <span>Cancel</span>
+                </a>
+
+
             </div>
         </article>
 
 
         <!---->
         <!--<div ng-repeat="post in pc.blogPosts | filter : pc.search" ng-if="$index >= pc.minPage && $index <= pc.maxPage">-->
-            <!--&lt;!&ndash;regular post&ndash;&gt;-->
-            <!--<div ng-hide="pc.tempPost[post.key]">-->
-                <!--<h3>{{post.val.title}}</h3>-->
-                <!--<div btf-markdown="post.val.post"></div>-->
-                <!--<button ng-click="pc.toggleEdit(post.val, post.key)">Edit</button>-->
-                <!--<button ng-click="pc.deleteData(post.key, 'posts')">Delete</button>-->
-            <!--</div>-->
-            <!--&lt;!&ndash;edit mode post&ndash;&gt;-->
-            <!--<div ng-show="pc.tempPost[post.key]">-->
-                <!--<p>Blog Edit Post {{$index}}</p>-->
-                <!--<input ng-model="pc.tempPost[post.key].title"><br><br>-->
-                <!--<textarea ng-model="pc.tempPost[post.key].post"></textarea><br>-->
-                <!--<button ng-click="pc.toggleEdit(post.val, post.key, true)">Finish</button>-->
-                <!--<button ng-click="pc.toggleEdit(post.val, post.key)">Cancel</button>-->
-            <!--</div>-->
+        <!--&lt;!&ndash;regular post&ndash;&gt;-->
+        <!--<div ng-hide="pc.tempPost[post.key]">-->
+        <!--<h3>{{post.val.title}}</h3>-->
+        <!--<div btf-markdown="post.val.post"></div>-->
+        <!--<button ng-click="pc.toggleEdit(post.val, post.key)">Edit</button>-->
+        <!--<button ng-click="pc.deleteData(post.key, 'posts')">Delete</button>-->
+        <!--</div>-->
+        <!--&lt;!&ndash;edit mode post&ndash;&gt;-->
+        <!--<div ng-show="pc.tempPost[post.key]">-->
+        <!--<p>Blog Edit Post {{$index}}</p>-->
+        <!--<input ng-model="pc.tempPost[post.key].title"><br><br>-->
+        <!--<textarea ng-model="pc.tempPost[post.key].post"></textarea><br>-->
+        <!--<button ng-click="pc.toggleEdit(post.val, post.key, true)">Finish</button>-->
+        <!--<button ng-click="pc.toggleEdit(post.val, post.key)">Cancel</button>-->
+        <!--</div>-->
         <!--</div>-->
 
     </div>
