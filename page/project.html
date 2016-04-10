@@ -184,7 +184,7 @@
 
             </div>
             <!--edit post-->
-            <div ng-show="pc.tempPost[post.$id]">
+            <div ng-show="pc.tempPost[post.$id]" class="column">
                 <figure class="media-left">
                     <p class="image is-64x64">
                         <img ng-src="{{pc.users[post.author].avatar}}">
@@ -202,35 +202,33 @@
 
                     <div class="message">
                         <input class="message-header" ng-model="pc.tempPost[post.$id].title">
-                    </div>
-                    <div class="message-body">
-                        <div>
-                        <textarea ng-model="pc.tempPost[post.$id].post" class="message-body"></textarea>
-                            </div>
+
+                        <div class="message-body control">
+
+                            <textarea ng-model="pc.tempPost[post.$id].post" class="textarea"></textarea>
+
+                        </div>
                     </div>
 
-                    <div class="message is-warning" ng-show="post.problems">
+                    <div class="message is-warning" >
                         <div class="message-header">
                             Problems
                         </div>
-                        <div class="message-body">
-                            <div>
-                                <textarea ng-model="pc.tempPost[post.$id].problems" class="message-body"></textarea>
-                            </div>
+                        <div class="message-body control">
+
+                                <textarea ng-model="pc.tempPost[post.$id].problems" class="textarea"></textarea>
+
                         </div>
                     </div>
-                    <div class="message is-success" ng-show="post.lessons">
-                        <div class="message-header">
+                    <div class="message is-success">
+                        <div class=" label message-header">
                             Lessons
                         </div>
-                        <div class="message-body">
-                            <div>
-                                <div>
-                                    <textarea ng-model="pc.tempPost[post.$id].lessons" class="message-body"></textarea>
-                                </div>
-                            </div>
+                        <div class="message-body control">
+                                    <textarea ng-model="pc.tempPost[post.$id].lessons" class="textarea"></textarea>
                         </div>
                     </div>
+
 
                     <nav class="navbar">
                         <div class="navbar-left">
