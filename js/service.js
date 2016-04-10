@@ -187,4 +187,10 @@ angular.module('cloudBlog')
             return $firebaseArray(ref.orderByChild(child).equalTo(query));
         }
     }
-);
+)
+.factory("cloudOrderArray", function($firebaseArray){
+    return function(root, child){
+        var ref = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/" + root);
+        return $firebaseArray(ref.orderByChild(child));
+    }
+})
