@@ -127,7 +127,7 @@
         <!--Posts Template-->
         <article class="media section" ng-repeat="post in pc.blogPosts | filter : pc.search"
                  ng-if="$index >= pc.minPage && $index <= pc.maxPage">
-            <div ng-hide="pc.tempPost[post.$id]">
+            <div ng-hide="pc.tempPost[post.$id]" class="column">
                 <figure class="media-left">
                     <p class="image is-64x64">
                         <img ng-src="{{pc.users[post.author].avatar}}">
@@ -175,7 +175,7 @@
                     </nav>
                 </div>
 
-                <a ng-show="pc.isAuthor(post.author)" class="button is-info"  ng-click="pc.postTest(post, post.$id)">
+                <a ng-show="pc.isAuthor(post.author)" class="button is-info"  ng-click="pc.startEdit(post, post.$id)">
                       <span class="icon">
                         <i class="fa fa-check"></i>
                       </span>
@@ -245,13 +245,13 @@
                 <!--<a class="button is-success" ng-click="pc.saveTest(post, $index, post.$id)">-->
                     <!--Save <i class="fa fa-save"></i>-->
                 <!--</a>-->
-                <a class="button is-success" ng-click="pc.saveTest(post, $index, post.$id)">
+                <a class="button is-success" ng-click="pc.saveEdit(post, $index, post.$id)">
                       <span class="icon">
                         <i class="fa fa-check"></i>
                       </span>
                     <span>Save</span>
                 </a>
-                <a class="button is-danger" ng-click="pc.cancelTest(post.$id)">
+                <a class="button is-danger" ng-click="pc.cancelEdit(post.$id)">
                       <span class="icon">
                         <i class="fa fa-ban"></i>
                       </span>

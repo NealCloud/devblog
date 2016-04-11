@@ -208,7 +208,7 @@ angular.module('cloudBlog')
         this.blogPost.tags = {};
         this.blogPost.public = true;
         this.router = "columnOne";
-
+        this.users = cloudFireObj("users");
         this.userData = cloudServe.userData;
         this.blogPost.project = cloudServe.currentProject;
 
@@ -267,7 +267,7 @@ angular.module('cloudBlog')
         this.testFire = null;
         this.projNames = cloudFireObj("projectName");
         this.currPage = 1;
-        this.perPage = 4;
+        this.perPage = 2;
         this.maxPage = this.currPage + this.perPage - 2;
         this.minPage = 0;
         this.finalPage = 100;
@@ -362,6 +362,10 @@ angular.module('cloudBlog')
         var projectScope = this;
         this.blogProjects = cloudFireArray("projects");
         this.users = cloudFireObj("users");
+
+        this.voteDown = function(val){
+           $(val.target).toggleClass("fa-thumbs-o-down fa-ban");
+        };
     })
     /**
      * controller for a Projects page
@@ -383,7 +387,7 @@ angular.module('cloudBlog')
 
         this.projNames = cloudFireObj("projectName");
         this.currPage = 1;
-        this.perPage = 3;
+        this.perPage = 2;
         this.maxPage = this.currPage + this.perPage - 2;
         this.minPage = 0;
         this.finalPage = 100;
@@ -397,12 +401,12 @@ angular.module('cloudBlog')
             else{
                 return false;
             }
-
         };
 
         this.hideProject = function(){
             this.projectHidden = !this.projectHidden;
-        }
+        };
+
         this.testCall = function () {
             console.log(this.blogProject.author);
         };
@@ -568,7 +572,7 @@ angular.module('cloudBlog')
             }
         };
 
-        this.postTest = function(val, key){
+        this.startEdit = function(val, key){
             console.log(this.tempPost, val, key);
             this.tempPost[key] = {};
             this.tempPost[key].title = val.title;
@@ -577,22 +581,23 @@ angular.module('cloudBlog')
             this.tempPost[key].problems = val.problems;
         };
 
-        this.saveTest = function(val, index, key){
+        this.saveEdit = function(val, index, key){
             console.log(this.tempPost[key]);
-            val.title = this.tempPost[key].title;
-            val.post = this.tempPost[key].post;
-            val.lessons = this.tempPost[key].lessons;
-            val.problems = this.tempPost[key].problems;
+            val.title = this.tempPost[key].title || "";
+            val.post = this.tempPost[key].post || "";
+            val.lessons = this.tempPost[key].lessons || "";
+            val.problems = this.tempPost[key].problems || "";
             projectScope.blogPosts.$save(index)
                 .then(function(){
                     console.log("yo");
-                    projectScope.cancelTest(key);
+                    projectScope.cancelEdit(key);
                 });
         };
-
-        this.cancelTest = function(key){
+        this.cancelEdit = function(key){
             delete this.tempPost[key];
         };
+
+
 
         this.getDays = function(num) {
             var dayArray = [];
@@ -605,10 +610,8 @@ angular.module('cloudBlog')
         };
 
         this.projectModal = function(a,b){
-
             console.log("yes",a,b);
             $("#projectModal").toggle('is-active');
-
         };
 
         this.toggleModal = function(){
