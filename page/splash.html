@@ -70,7 +70,7 @@
     <!--</div>-->
     <!--</div>-->
 
-    <div class="box" ng-repeat="post in sc.blogPosts | filter:sc.search"
+    <div class="box" ng-repeat="post in sc.blogPosts | cloudReverse"
          ng-if="$index >= sc.minPage && $index <= sc.maxPage">
         <article class="media">
             <div class="media-left">
