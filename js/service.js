@@ -194,3 +194,15 @@ angular.module('cloudBlog')
         return $firebaseArray(ref.orderByChild(child));
     }
 })
+.factory("cloudLimitArray", function($firebaseArray){
+    return function(root, child){
+        var ref = new Firebase("https://nealcloud.firebaseio.com/cloudBlog/" + root);
+        return $firebaseArray(ref.endAt().limitToLast(100));
+        //ref.orderByChild("weight").limitToLast(2)
+    }
+})
+    .filter('cloudReverse', function() {
+        return function(items) {
+            return items.slice().reverse();
+        };
+    });

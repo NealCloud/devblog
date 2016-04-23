@@ -261,7 +261,7 @@ angular.module('cloudBlog')
      * controller for the splash page
      * calls a fireObject to show all the projects
      * **/
-    .controller("splashCtrl", function (cloudServe, $location,$anchorScroll, $scope, $firebaseObject, cloudFireObj,cloudOrderArray, cloudFireArray, $firebaseAuth) {
+    .controller("splashCtrl", function (cloudServe, $location,$anchorScroll, $scope, $firebaseObject, cloudLimitArray, cloudFireObj,cloudOrderArray, cloudFireArray, $firebaseAuth) {
         this.test = "tester";
         var splashScope = this;
         this.testFire = null;
@@ -272,7 +272,9 @@ angular.module('cloudBlog')
         this.minPage = 0;
         this.finalPage = 100;
         //this.blogPosts = cloudFireArray("posts");
-        this.blogPosts = cloudOrderArray("posts", "created")
+        //this.blogPosts = cloudOrderArray("posts", "created")
+        this.blogPosts = cloudLimitArray("posts");
+
         this.users = cloudFireObj("users");
 
         this.timeConvert = cloudServe.timeConvert;
