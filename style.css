@@ -1,0 +1,19 @@
+
+
+
+/*img{*/
+    /*max-width: 200px;*/
+    /*max-height: 200px;*/
+/*}*/
+
+/*p{*/
+    /*word-wrap: break-word;*/
+/*}*/
+
+/*#projectModal {*/
+    /*display: flex;*/
+
+/*}*/
+.modal-container{
+    transform: translate(15vw,50vh);
+}

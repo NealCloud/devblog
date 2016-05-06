@@ -1,0 +1,73 @@
+<div>
+    <!--<input id="title" type="text" ng-model="pc.blogProject.title">-->
+    <!--<textarea name="" id="" cols="30" rows="10" ng-model="pc.blogProject.description"></textarea>-->
+    <!--&lt;!&ndash;<select ng-model="pc.tagSelected" ng-options="item as item for item in pc.possibleTags">&ndash;&gt;-->
+    <!--&lt;!&ndash;</select>&ndash;&gt;-->
+    <!--&lt;!&ndash;<input type="checkbox" ng-model="wb.blogPost.public" checked>&ndash;&gt;-->
+    <!--&lt;!&ndash;<ul>&ndash;&gt;-->
+        <!--&lt;!&ndash;<li ng-repeat="tag in wb.blogPost.tags" ng-click="wb.removeTag(tag)">{{tag}}</li>&ndash;&gt;-->
+    <!--&lt;!&ndash;</ul>&ndash;&gt;-->
+    <!--&lt;!&ndash;<button ng-click="wb.addTag(wb.tagSelected)">Add a tag</button>&ndash;&gt;-->
+    <!--<button type="button" ng-click="pc.postToBlog(pc.blogProject)">Post</button>-->
+
+    <!--<h3>{{pc.blogPost.title}}</h3>-->
+    <!--<div btf-markdown="pc.blogProject.description"></div>-->
+
+    <form>
+        <label class="label" for="title">Title</label>
+        <p class="control">
+            <input class="input" id="title" type="text" ng-model="pc.blogProject.title" placeholder="Title">
+        </p>
+        <label class="label" for="picture">Picture URL</label>
+        <p class="control">
+            <input class="input" id="picture" type="text" ng-model="pc.blogProject.picture" placeholder="Picture">
+        </p>
+        <label class="label" for="repo">Repo URL</label>
+        <p class="control">
+            <input class="input" id="repo" type="text" ng-model="pc.blogProject.repo" placeholder="Repo URL">
+        </p>
+
+
+        <label class="label" for="bodytext">Description</label>
+        <p class="control">
+            <textarea class="textarea" name="bodytext" id="bodytext" cols="30" rows="10"
+                      ng-model="pc.blogProject.description"></textarea>
+        </p>
+        <label class="label" for="problems">Goals</label>
+        <p class="control">
+            <textarea class="textarea" name="problems" id="problems" cols="30" rows="10"
+                      ng-model="pc.blogProject.goals"></textarea>
+        </p>
+
+        <label class="checkbox" for="public">
+            <input id="public" type="checkbox" ng-model="pc.blogProject.public">
+            Public
+        </label>
+
+        <p class="control  has-addons">
+
+        </p>
+        <label class="label" for="tags">Collaborators</label>
+        <ul>
+            <li class="tag" ng-class-odd="'is-info'" ng-class-even="'is-dark'" ng-repeat="(key,value) in pc.blogProject.collaborators">
+                {{pc.users[key].name}}
+                <span class="delete is-small"ng-click="pc.removeTag(key)"></span>
+            </li>
+        </ul>
+        <br>
+        <p class="control  has-addons">
+            <span class="select">
+            <select id="tags" ng-model="wb.tagSelected"
+                    ng-options="key as value.name for (key,value) in pc.users"></select>
+            </span>
+            <a class="button is-info" ng-click="pc.addPerson(wb.tagSelected)">Add a Person</a>
+        </p>
+
+        <button class="button is-primary is-large" type="button" ng-click="pc.createProject(pc.blogProject)">Post</button>
+    </form>
+    <br>
+
+
+</div>
+
+

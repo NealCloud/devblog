@@ -1,0 +1,87 @@
+<h3 class="title is-3">Account Page</h3>
+<table class="table" ng-hide="ac.userAuth">
+    <thead>
+    <tr>
+        <th>Sign In</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <form  ng-submit="ac.logIn(ac.name, ac.password)">
+    <tr>
+        <td>Email</td>
+        <td><input type="text" ng-model="ac.name"></td>
+    </tr>
+    <tr>
+        <td>Password</td>
+        <td><input type="text" ng-model="ac.password"></td>
+    </tr>
+        <tr>
+            <td><input type="submit" ng-click="ac.logIn(ac.name, ac.password)" class="button is-primary" value="Login"></td>
+            <td> <button class="button is-warning pull-right" ui-sref="createAccount">Create New Account</button></td>
+
+        </tr>
+    </form>
+    </tbody>
+
+</table>
+
+<table ng-show="ac.userAuth" class="table">
+    <thead>
+    <tr>
+        <th>Account</th>
+        <th>Value</th>
+        <th></th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr ng-hide="ac.editName">
+        <td>User Name</td>
+        <td>{{ac.userInfo.name}}</td>
+        <td class="table-link table-icon">
+            <a ng-click="ac.toggleEditName()">
+                edit
+                <i class="fa fa-eraser"></i>
+            </a>
+        </td>
+    </tr>
+    <tr ng-show="ac.editName">
+        <td>User Name</td>
+        <td><input type="text" ng-model="ac.userInfo.name"></td>
+        <td class="table-link table-icon">
+            <a ng-click="ac.saveData()">
+                Save
+                <i class="fa fa-save"></i>
+            </a>
+        </td>
+        <td class="table-link table-icon">
+            <a ng-click="ac.cancelSave()">Cancel
+                <i class="fa fa-times"></i>
+            </a>
+        </td>
+    </tr>
+    <tr>
+        <td>Email</td>
+        <td>{{ac.users[ac.userAuth.auth.uid].email}}</td>
+        <td class="table-link table-icon">
+            <a href="">
+            Change (not yet implemented)
+            <i class="fa fa-envelope"></i>
+        </a>
+        </td>
+    </tr>
+    <tr>
+        <td>Avatar</td>
+        <td><img src="{{ac.users[ac.userAuth.auth.uid].avatar}}" alt=""></td>
+        <td class="table-link table-icon">
+            <a href="http://www.gravatar.com" target="_blank">Powered by Gravatar
+                <i class="fa fa-fort-awesome"></i>
+            </a>
+        </td>
+    </tr>
+
+    </tbody>
+</table>
+
+<!--<button ng-click="ac.testAccount()">Test</button>-->

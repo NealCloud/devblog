@@ -1,0 +1,110 @@
+<div>
+    <div id="pageTop"></div>
+    <h3 class="title is-3">Dev Blog</h3>
+    <h5 class="subtitle is-5">Home of the infamous Morty Match</h5>
+
+    <nav class="navbar" >
+        <div class="navbar-left">
+            <div class="navbar-item">
+                <p class="subtitle is-5">
+                    Total Posts: <strong>{{sc.blogPosts.length}}</strong>
+                </p>
+                <p>
+                    Per Page
+                    <select ng-model="sc.perPage" ng-options="item for item in [1,2,3,4,5,6,7,8,9,10]" type="number"
+                            ng-change="sc.countPage(0)">
+                    </select>
+                </p>
+            </div>
+            <div class="navbar-item">
+                <p class="control has-addons">
+                    <input class="input" type="text" placeholder="Find a post" ng-model="sc.search">
+                </p>
+            </div>
+            <nav class="pagination">
+                <a ng-click="sc.countPage(0)">First</a>
+                <a ng-click="sc.countPage('max')">Last</a>
+                <ul>
+                    <!--<li ng-click="sc.countPage(-1)">-->
+                        <!--<a>Prev</a>-->
+                    <!--</li>-->
+                    <!--<li ng-hide="sc.currPage <= 2">-->
+                    <!--<span>...</span>-->
+                    <!--</li>-->
+                    <li>
+                        <a ng-click="sc.countPage(-1)" ng-class="{'is-disabled' : sc.currPage == 1}">{{sc.currPage -
+                            1}}</a>
+                    </li>
+                    <li>
+                        <a class="is-active">{{sc.currPage}}</a>
+                    </li>
+                    <li >
+                        <a ng-click="sc.countPage(1)" ng-class="{'is-disabled' : sc.currPage >= sc.finalPage}">{{sc.currPage + 1}} </a>
+                    </li>
+                    <!--<li  ng-hide="sc.currPage >= (sc.blogPosts.length / sc.perPage) - 1">-->
+                    <!--<span>...</span>-->
+                    <!--</li>-->
+                    <!--<li ng-click="sc.countPage(1)">-->
+                        <!--<a>Next</a>-->
+                    <!--</li>-->
+                </ul>
+            </nav>
+        </div>
+    </nav>
+
+    <!--Some Testing stuff-->
+    <!--<input  type="text" ng-model="sc.testFire" ng-change="sc.testChange()">-->
+    <!--<h4>Data: {{ sc.testFire }}</h4>-->
+
+    <!--<h4>Data Value: {{ sc.testFire.$value }}</h4>-->
+    <!--<button ng-click="sc.test()">key test</button>-->
+    <!--End of Test stuff-->
+
+    <h2>Lastest Posts</h2>
+    <!--<div ng-repeat="post in sc.blogPosts | filter:sc.search">-->
+    <!--<div>-->
+    <!--<h4>{{post.title}}</h4>-->
+    <!--<h5>posted on {{sc.timeConvert(post.created)}}</h5>-->
+    <!--<div btf-markdown="post.post"></div>-->
+    <!--<a  ng-show="post.project" href="index.html#/project/{{post.project}}">Project: {{sc.projNames[post.project]}}</a>-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <div class="box" ng-repeat="post in sc.blogPosts | cloudReverse"
+         ng-if="$index >= sc.minPage && $index <= sc.maxPage">
+        <article class="media">
+            <div class="media-left">
+                <figure class="image is-64x64">
+                    <img ng-src="{{sc.users[post.author].avatar}}" alt="avatar">
+                </figure>
+            </div>
+            <div class="media-content">
+                <div class="content">
+                    <p>
+                        <strong>{{post.title}}</strong>
+                        <small>Created on: {{post.created | date: 'short'}}</small>
+                        <small> Author: {{sc.users[post.author].name}}</small>
+                        <br>
+                    <div btf-markdown="post.post"></div>
+                    </p>
+                </div>
+                <nav class="navbar">
+                    <div class="navbar-left">
+                        <a ng-show="post.project" class="navbar-item" href="index.html#/project/{{post.project}}">
+                            <span class="icon is-small"><i class="fa fa-reply"></i></span>
+                        </a>
+                        <a class="navbar-item">
+                            <span class="icon is-small"><i class="fa fa-thumbs-up"></i></span>
+                        </a>
+                        <a class="navbar-item" data-ng-repeat="(icon, tag) in post.tags">
+                            <span class="icon is-small"><i class="fa" ng-class="tag"></i></span>
+                            <p>{{title}}</p>
+                        </a>
+                    </div>
+                </nav>
+            </div>
+        </article>
+    </div>
+
+</div>
+<!--<a ng-click="sc.scrollTo('topPage')">Top of Page</a>-->

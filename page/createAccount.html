@@ -1,0 +1,27 @@
+<h3 class="title is-3">Create an Account</h3>
+<h5 class="subtitle is-5">Its free!</h5>
+<table class="table">
+    <thead>
+    <tr>
+        <th>Account</th>
+        <th>Required</th>
+
+    </tr>
+    </thead>
+    <tbody>
+
+    <tr>
+        <td>User Name</td>
+        <td><input type="text" ng-model="ac.newUser.name"></td>
+    </tr>
+    <tr>
+        <td>Email</td>
+        <td><input type="text" ng-model="ac.newUser.email"></td>
+    </tr>
+    <tr>
+        <td>Password</td>
+        <td><input type="text" ng-model="ac.newUser.password"></td>
+    </tr>
+    </tbody>
+</table>
+<button class="button is-success" ng-click="ac.createUser()">Create</button>
